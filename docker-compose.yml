@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: ./api
+    volumes:
+      - django_static:/static
+      - django_media:/media
+    env_file:
+      - ./api/.env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+    env_file:
+      - ./db/.env
+
+volumes:
+  django_static:
+  django_media:
+  pg_data:
