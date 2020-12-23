@@ -12,15 +12,28 @@ services:
     depends_on:
       - db
     ports:
-      - "8000:8000"
+      - 8000:8000
+
   db:
     image: postgres:12.0-alpine
     volumes:
-      - pg_data:/var/lib/postgresql/data/
+      - pg_datas:/var/lib/postgresql/datas/
     env_file:
       - ./db/.env
+
+  nginx:
+    restart: always
+    build: .
+    volumes:
+      - django_static:/app/django_files/static
+      - django_media:/app/django_files/media
+      - ./nginx/development:/etc/nginx/conf.d
+    ports:
+      - "84:80"
+    depends_on:
+      - api
 
 volumes:
   django_static:
   django_media:
-  pg_data:
+  pg_datas:
