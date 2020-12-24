@@ -29,10 +29,6 @@ function Confirm(props) {
             <img style={{maxWidth: "300px", maxHeight: "180px" ,borderRadius: "4%"}} src={props.file.url}/>
             <img src={plusImg}/>
             <img style={{maxWidth: "300px", maxHeight: "180px",borderRadius: "4%"}} src={props.fileStyle.url}/>
-
-
-
-            
         </div>
     );
 }

@@ -13,15 +13,16 @@ const theme = createMuiTheme({
     primary: {
       light: '#fff',
       main: '#fff',
-      dark: '#990000',
+      dark: '#00c400',
       contrastText: '#000',
     },
     secondary: {
-      light: '#000',
-      main: '#000',
-      dark: '#000',
+      light: '#6a6a6a',
+      main: '#8f8c8c',
+      dark: '#d7d5d5',
       contrastText: '#000',
-    }
+    },
+
   },
 });
 

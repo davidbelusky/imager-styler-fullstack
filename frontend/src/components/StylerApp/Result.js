@@ -1,13 +1,19 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 function Result(props) {
     return (
         <div>
-            <Button style={{fontSize:"1.5rem" ,width:"10rem" ,marginRight:"2rem"}} variant="contained" color="primary">
-                                abcd
-                            </Button>
+            {props.resultImage ? (
+                <img style={{maxWidth: "500px", maxHeight: "380px",borderRadius: "4%"}} src={props.resultImage}/>)
+            :(
+                <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
+                    <CircularProgress color="primary" size="6rem" />
+                    <h1 style={{color:"white", marginTop:"5rem"}}>Styling . . .</h1>
+                </div>
+            )}
+
         </div>
     );
 }
