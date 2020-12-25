@@ -9,6 +9,8 @@ import Result from "./Result"
 import {API_URL} from '../../constants'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import { motion, AnimatePresence,AnimateSharedLayout } from 'framer-motion'
+import { demoAnimate,stylerChangePage } from '../../variants'
 
 
 
@@ -34,10 +36,11 @@ export default function StylerApp() {
     const classes = useStyles();
     const steps = [{"step":1,"title":"Select image"},{"step":2,"title":"Select style"},{"step":3,"title":"Confirm"},{"step":4,"title":"Result"}]
 
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
     const [file, setFile] = useState("");
     const [fileStyle, setFileStyle] = useState("");
     const [resultImage,setResultImage] = useState("");
+    const [screenAnimation,setScreenAnimate] = useState("stay")
     const actualStepData = steps.filter(x => x.step === step)[0]
 
     function startStyleImage () {
@@ -57,7 +60,7 @@ export default function StylerApp() {
         // Return action component based on step state
         switch(step) {
           case 1:
-            return <DragnDrop setFile={setFile} file={file}/>;
+            return <DragnDrop setFile={setFile} file={file}/>
           case 2:
               return <DragnDrop setFile={setFileStyle} file={fileStyle}/>
           case 3:
@@ -69,41 +72,71 @@ export default function StylerApp() {
         }
       }
 
+    function startScreenAnimate(direction){
+        setScreenAnimate(direction)
+        let newStep
+        if (direction === "next"){
+            newStep = step + 1
+        }
+        else if (direction === "back"){
+            newStep = step - 1
+        }
+        else if (direction === "tryAgain"){
+            newStep = 1
+        }
+        setTimeout(
+            () => {setStep(newStep)},750
+        )
+        setTimeout(
+            () => {setScreenAnimate("stay")},1000
+        )
+
+    }
+
     function handleClick(e){
         // Change steps, and validate before change, try again clean all states and set step to default 1
         const btnName = e.target.textContent
         if (btnName === "Next"){
             if (step === 1 && file === "") {
                 alert('Please select image')
+                return
             }
             else if (step === 2 && fileStyle === ""){
                 alert("Please select style image")
+                return
                 }
             
-            else if (step === 3){
+            if (step === 3){
                 startStyleImage()
-                setStep(step + 1)
             }
-            else{
-                setStep(step + 1)
-            }
+            startScreenAnimate("next")
+            
         }
         else if (btnName === "Back"){
-            setStep(step - 1)
+            startScreenAnimate("back")
+            
         }
         else if (btnName === "Try again"){
-            setStep(1)
             setFile("")
             setFileStyle("")
             setResultImage("")
+            startScreenAnimate("tryAgain")
         }
     }
 
     return (
-        <div>
+        <motion.div
+        initial={{opacity:0}}
+        animate={{opacity:1}}
+        >
             <Button style={{fontSize:"1rem" ,width:"10rem", marginTop:"0.2rem",textTransform: "none"}} variant="contained" color="secondary" component={Link} to="/">
                 Back to main
             </Button>
+        <motion.div
+        animate={screenAnimation}
+        variants={stylerChangePage}
+        >
+            
             <Grid container direction="column" justify="center" alignItems="center">
                     <Grid item xs={12} sm={6}>
                         <div className={classes.appTitle}>
@@ -141,6 +174,7 @@ export default function StylerApp() {
                     </Grid>
                 </Grid>
 
-        </div>
+        </motion.div>
+        </motion.div>
     )
 }
