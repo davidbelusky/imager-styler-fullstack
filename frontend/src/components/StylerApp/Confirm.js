@@ -1,6 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import img1 from "../../images/static/style_transfer_example.png"
 import { makeStyles } from '@material-ui/core/styles';
 import plusImg from '../../images/static/plus.png'
 

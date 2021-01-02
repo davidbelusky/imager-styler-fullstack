@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { MenuList } from '@material-ui/core';
 import NavBarItem from "./NavBarItem"
+import RegisterModal from "../RegisterModal/RegisterModal"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,9 +26,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flex:1,
   },
-  loginButton: {
-      fontSize: "1.2rem"
-  }
+
 
 }));
 
@@ -49,7 +48,10 @@ function NavBar(props) {
                             {menuItemsList.map((item,i) => <NavBarItem menuName={item.name} menuLink = {item.link}/>)}
                         </MenuList>
                     </div>
-                    <Button color="primary" className={classes.loginButton}>Login</Button>
+                    <div style={{display:"flex"}}>
+                    <Button color="primary" variant="outlined" style={{fontSize:"1rem"}}>Login</Button>      
+                    <RegisterModal />
+                    </div>
                 </Toolbar>
             </AppBar>
         </div>

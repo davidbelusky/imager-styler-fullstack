@@ -24,6 +24,19 @@ const theme = createMuiTheme({
     },
 
   },
+
+  // Override after focus text input label text stay black color
+  overrides: {
+    MuiFormLabel: {
+      root: {
+        "&$focused": {
+          color: "black",
+        }
+      }, 
+      
+      focused: {}
+    }
+  }
 });
 
 
