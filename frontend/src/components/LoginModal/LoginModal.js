@@ -5,8 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import LoginForm from "./LoginForm"
 
-import RegisterForm from "./RegisterForm"
 
 
 
@@ -27,10 +27,10 @@ function SimpleDialog(props) {
       </div>
       <Grid container direction="column" justify="center" alignItems="center" style={{backgroundColor:"white" ,width:"350px",height:"425px"}}>
         <Grid item>
-          <Typography style={{marginTop:"0rem",color:"#2d2d2d"}} variant="h4">Sign Up</Typography>
+          <Typography style={{marginTop:"0rem",color:"#2d2d2d"}} variant="h4">Sign In</Typography>
         </Grid>
         <Grid item>
-          <RegisterForm />
+            <LoginForm handleClose={handleClose}/>
         </Grid>
       </Grid>
     </Dialog>
@@ -38,7 +38,7 @@ function SimpleDialog(props) {
 }
 
 
-export default function RegisterModal() {
+export default function LoginModal() {
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -50,7 +50,7 @@ export default function RegisterModal() {
 
   return (
     <div>
-      <Button color="primary" variant="contained" style={{fontSize:"1rem",marginLeft:"0.5rem"}} onClick={handleClickOpen}>Get started</Button>
+      <Button color="primary" variant="outlined" style={{fontSize:"1rem"}} onClick={handleClickOpen}>Login</Button> 
       <SimpleDialog open={open} onClose={handleClose} />
     </div>
   );

@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import { MenuList } from '@material-ui/core';
 import NavBarItem from "./NavBarItem"
 import RegisterModal from "../RegisterModal/RegisterModal"
+import LoginModal from "../LoginModal/LoginModal"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +50,7 @@ function NavBar(props) {
                         </MenuList>
                     </div>
                     <div style={{display:"flex"}}>
-                    <Button color="primary" variant="outlined" style={{fontSize:"1rem"}}>Login</Button>      
+                    <LoginModal />     
                     <RegisterModal />
                     </div>
                 </Toolbar>

@@ -6,8 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 
-
-
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -18,8 +16,8 @@ const theme = createMuiTheme({
     },
     secondary: {
       light: '#6a6a6a',
-      main: '#8f8c8c',
-      dark: '#d7d5d5',
+      main: '#d3d3d3',
+      dark: '#f2f2f2',
       contrastText: '#000',
     },
 
@@ -38,7 +36,6 @@ const theme = createMuiTheme({
     }
   }
 });
-
 
 ReactDOM.render(
   <React.StrictMode>
