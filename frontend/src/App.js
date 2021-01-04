@@ -15,8 +15,6 @@ function App() {
             <Route path="/styler" exact component={StylerApp} />
             <Route path="/t" exact component={Trying} />
             <Route path="/users/confirm/activation" component={UserActivation} />
-
-
           </Switch>
         </div>
       </div>

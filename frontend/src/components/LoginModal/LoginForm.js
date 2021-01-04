@@ -12,9 +12,10 @@ function checkIfUserIsActive(handleClose,email,setInfoMessage,values){
     axios.post(`${API_URL}/api/activation_check/`,data)
     .then(response => {   
         if (response.data.user_is_active === false){
-            setInfoMessage("User is not active, if you haven't received an activation email please click on resend activation email below")
+            setInfoMessage("User is not active, Please check your emails and activate user by click on activate link")
         }
         else{
+            // User is active 
             LogInUser(handleClose,values,setInfoMessage)
         }
     })
@@ -31,8 +32,11 @@ function checkIfUserIsActive(handleClose,email,setInfoMessage,values){
 
 function LogInUser(handleClose,values,setInfoMessage){
     axios.post(`${API_URL}/api/auth/jwt/create`, values)
-    .then(response => {   
+    .then(response => {  
         handleClose()
+        localStorage.setItem('token',response.data.access)
+        localStorage.setItem('refresh_token',response.data.refresh)
+
     })
     .catch(error => {
     console.log(error.response)
@@ -43,6 +47,14 @@ function LogInUser(handleClose,values,setInfoMessage){
         setInfoMessage("Error try it again after a few minutes")
     }
     });
+
+    axios.get(`${API_URL}/api/images/`)
+    .then(response => {
+        console.log(response.data)
+    })
+    .catch(error => {
+        console.log(error.response)
+    })
     
 }
 
