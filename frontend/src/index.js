@@ -5,8 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios'
+import {API_URL} from './constants'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
+
 
 const theme = createMuiTheme({
   palette: {

@@ -9,6 +9,10 @@ import NavBarItem from "./NavBarItem"
 import RegisterModal from "../RegisterModal/RegisterModal"
 import LoginModal from "../LoginModal/LoginModal"
 
+import {API_URL} from '../../constants'
+import axios from 'axios'
+import {axiosApiInstance} from "../../axiosTokenHandle"
+
 
 const useStyles = makeStyles((theme) => ({
 
@@ -37,6 +41,12 @@ function NavBar(props) {
     const menuItemsList = [{'name':'Home',"link":"/"}, {'name':'Gallery',"link":"/gallery"}, {'name':'Styled Gallery',"link":"/styled_gallery"},
      {'name':'Styling',"link":"/styling"}, {'name':'Contact',"link":"/contact"}]
 
+     async function images(){
+        const result = await axiosApiInstance.get(`${API_URL}/api/images/`)
+        console.log(result)
+
+     }
+
     return (
         <div>
             <AppBar className={classes.appBar} position="static">
@@ -48,6 +58,7 @@ function NavBar(props) {
                         <MenuList className={classes.menuList}>
                             {menuItemsList.map((item,i) => <NavBarItem menuName={item.name} menuLink = {item.link}/>)}
                         </MenuList>
+                    <Button onClick={images} color="primary"> daa</Button>
                     </div>
                     <div style={{display:"flex"}}>
                     <LoginModal />     

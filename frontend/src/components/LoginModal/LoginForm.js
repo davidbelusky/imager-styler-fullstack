@@ -25,21 +25,24 @@ function checkIfUserIsActive(handleClose,email,setInfoMessage,values){
         setInfoMessage("Email does not exist.")
     }
     else {
+        console.log(error.response)
         setInfoMessage("Error try it again after a few minutes")
     }
 })
 }
 
 function LogInUser(handleClose,values,setInfoMessage){
+    
     axios.post(`${API_URL}/api/auth/jwt/create`, values)
     .then(response => {  
         handleClose()
+        localStorage.clear()
         localStorage.setItem('token',response.data.access)
         localStorage.setItem('refresh_token',response.data.refresh)
-
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
     })
     .catch(error => {
-    console.log(error.response)
+    console.log(error)
     if (error.response.status >= 400 && error.response.status < 500){
             setInfoMessage("Wrong credentials")
     }
@@ -47,22 +50,12 @@ function LogInUser(handleClose,values,setInfoMessage){
         setInfoMessage("Error try it again after a few minutes")
     }
     });
-
-    axios.get(`${API_URL}/api/images/`)
-    .then(response => {
-        console.log(response.data)
-    })
-    .catch(error => {
-        console.log(error.response)
-    })
     
 }
 
 
 function RegisterForm(props) {
     const [infoMessage, setInfoMessage] = useState("");
-
-
     return (
             <Formik
             initialValues={{
