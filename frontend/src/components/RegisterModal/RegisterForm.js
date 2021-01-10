@@ -68,7 +68,7 @@ function RegisterForm(props) {
               }}
             >
             {({ submitForm, isSubmitting }) => (
-            <form autoComplete="off" style={{display:"flex", flexDirection:"column", marginTop:"2rem"}}>
+            <form onSubmit={e => { e.preventDefault(); submitForm(e) }} autoComplete="off" style={{display:"flex", flexDirection:"column", marginTop:"2rem"}}>
                 <Field
                 component={TextField}
                 name="email"
@@ -95,14 +95,9 @@ function RegisterForm(props) {
                 </Typography>
                 </div>
 
-                <Button variant="contained" color="secondary" onClick={submitForm} style={{marginTop:"1.2rem", marginBottom:"0.2rem"}}
-                
-                >
+                <Button type="submit" variant="contained" color="secondary" style={{marginTop:"1.2rem", marginBottom:"0.2rem"}}>
                     Register
                 </Button>
-
-                
-
             </form>
             )}
             </Formik>

@@ -8,9 +8,7 @@ export const axiosApiInstance = axios.create();
 axiosApiInstance.interceptors.request.use(
   async config => {
     config.headers = { 
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Authorization': `Bearer ${localStorage['token']}`,
     }
     return config;
   },
@@ -18,26 +16,39 @@ axiosApiInstance.interceptors.request.use(
     Promise.reject(error)
 });
 
-async function refreshAccessToken(){
-  const data = {"refresh":localStorage.getItem('refresh_token')}
-  const response = await axios.post(`${API_URL}/api/auth/jwt/refresh`,data)
-  return response.data.access
+export async function refreshAccessToken(){
+  //Update access token if refresh token is valid and save access token in localstorage
+  const data = {"refresh":localStorage['refresh_token']}
+  try {
+    const response = await axios.post(`${API_URL}/api/auth/jwt/refresh`,data)
+    localStorage.removeItem('token')
+    localStorage.setItem('token',response.data.access)
+    return true
+  }
+  catch (err) {
+    return false
+  }
 }
 
 // Response interceptor for API calls
 axiosApiInstance.interceptors.response.use((response) => {
-    console.log('same')
   return response
 }, async function (error) {
-    console.log('error')
   const originalRequest = error.config;
   if (error.response.status === 401 && !originalRequest._retry) {
-
     originalRequest._retry = true;
-    const access_token = await refreshAccessToken();  
-    localStorage.removeItem('token')
-    localStorage.setItem('token',access_token)
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
+    const accessTokenUpdated = await refreshAccessToken();  
+    console.log(originalRequest)
+    if (accessTokenUpdated === false){
+      return false
+    }
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+    // If send post request to verify endpoint with token in post data  ex. {token:"example"} update recieved access token after use refresh token in request
+    const endpoint = originalRequest.url.substring(originalRequest.url.lastIndexOf('/') + 1)
+    if ("data" in originalRequest && originalRequest.data !== undefined && 'token' in JSON.parse(originalRequest.data) && endpoint === "verify"){
+      originalRequest.data = {"token":localStorage.getItem('token')}
+    }
+
     return axiosApiInstance(originalRequest);
   }
   return Promise.reject(error);

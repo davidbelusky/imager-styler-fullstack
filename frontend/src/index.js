@@ -6,9 +6,17 @@ import reportWebVitals from './reportWebVitals';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios'
 import {API_URL} from './constants'
+import {createStore} from 'redux'
+import allReducers from './redux/reducers'
+import { Provider } from 'react-redux'
+
+
+const store = createStore(
+  allReducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
-
 
 const theme = createMuiTheme({
   palette: {
@@ -44,7 +52,9 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -4,10 +4,13 @@ import { Button, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import {API_URL} from '../../constants'
 import axios from 'axios'
+import { useDispatch  } from 'react-redux'
+import {LogIn, LogOut} from "../../redux/actions"
 
 
 
-function checkIfUserIsActive(handleClose,email,setInfoMessage,values){
+
+function checkIfUserIsActive(handleClose,email,setInfoMessage,values,dispatch){
     const data = {"email":email}
     axios.post(`${API_URL}/api/activation_check/`,data)
     .then(response => {   
@@ -16,7 +19,7 @@ function checkIfUserIsActive(handleClose,email,setInfoMessage,values){
         }
         else{
             // User is active 
-            LogInUser(handleClose,values,setInfoMessage)
+            LogInUser(handleClose,values,setInfoMessage,dispatch)
         }
     })
 .catch(error => {
@@ -31,15 +34,16 @@ function checkIfUserIsActive(handleClose,email,setInfoMessage,values){
 })
 }
 
-function LogInUser(handleClose,values,setInfoMessage){
-    
-    axios.post(`${API_URL}/api/auth/jwt/create`, values)
+async function LogInUser(handleClose,values,setInfoMessage,dispatch){
+
+    await axios.post(`${API_URL}/api/auth/jwt/create`, values)
     .then(response => {  
         handleClose()
         localStorage.clear()
         localStorage.setItem('token',response.data.access)
         localStorage.setItem('refresh_token',response.data.refresh)
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token')
+        dispatch(LogIn())
     })
     .catch(error => {
     console.log(error)
@@ -54,8 +58,11 @@ function LogInUser(handleClose,values,setInfoMessage){
 }
 
 
-function RegisterForm(props) {
+function LoginForm(props) {
     const [infoMessage, setInfoMessage] = useState("");
+    const dispatch = useDispatch()
+    console.log(dispatch)
+
     return (
             <Formik
             initialValues={{
@@ -82,11 +89,11 @@ function RegisterForm(props) {
             
             onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(false);
-                checkIfUserIsActive(props.handleClose,values.email,setInfoMessage,values)
+                checkIfUserIsActive(props.handleClose,values.email,setInfoMessage,values,dispatch)
               }}
             >
             {({ submitForm, isSubmitting }) => (
-            <form autoComplete="off" style={{display:"flex", flexDirection:"column", marginTop:"2rem"}}>
+            <form onSubmit={e => { e.preventDefault(); submitForm(e) }} autoComplete="off" style={{display:"flex", flexDirection:"column", marginTop:"2rem"}}>
                 <Field
                 component={TextField}
                 name="email"
@@ -108,7 +115,7 @@ function RegisterForm(props) {
                 </Typography>
                 </div>
 
-                <Button variant="contained" color="secondary" onClick={submitForm} style={{marginTop:"1.2rem", marginBottom:"0.2rem"}}>
+                <Button type="submit" variant="contained" color="secondary"  style={{marginTop:"1.2rem", marginBottom:"0.2rem"}}>
                     Sign in
                 </Button>
             </form>
@@ -117,4 +124,4 @@ function RegisterForm(props) {
     );
 }
 
-export default RegisterForm;
+export default LoginForm;

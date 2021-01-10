@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import NavBar from "./Navbar/NavBar"
 import BodyMain from "./BodyMain/BodyMain"
 import { mainAnimate } from "../variants"
@@ -6,7 +6,8 @@ import { motion } from 'framer-motion'
 
 
 export default function Main() {
-    const [logged,setLogged] = useState(false)
+
+
     return (
         <motion.div
             variants={mainAnimate}
@@ -14,7 +15,6 @@ export default function Main() {
             animate="show"
             exit="hidden"
         >
-            <NavBar />
             <BodyMain />
         </motion.div>
     )
