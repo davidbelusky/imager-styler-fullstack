@@ -74,6 +74,7 @@ function RegisterForm(props) {
                 name="email"
                 type="email"
                 label="Email"
+                required
                 style={{marginBottom:"0.2rem"}}
                 />
                 <Field
@@ -81,6 +82,7 @@ function RegisterForm(props) {
                 type="password"
                 label="Password"
                 name="password"
+                required
                 style={{marginBottom:"0.2rem"}}
                 />
                 <Field
@@ -88,6 +90,7 @@ function RegisterForm(props) {
                 type="password"
                 label="Re-password"
                 name="re_password"
+                required
                 />
                 <div style={{maxWidth:"210px"}}>
                 <Typography style={{marginTop:"2rem",color:infoMessage.color, marginTop:"1rem"}} variant="p" component="p">

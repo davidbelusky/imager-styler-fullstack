@@ -1,10 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import AddImageForm from "./AddImageForm"
+import {API_URL} from "../../constants"
+import {axiosApiInstance} from "../../axiosTokenHandle"
+import { useDispatch  } from 'react-redux'
+import { LogOut, OpenLoginDialog} from "../../redux/actions"
 
 
 function SimpleDialog(props) {
@@ -22,22 +27,42 @@ function SimpleDialog(props) {
           <CloseIcon />
         </IconButton>
       </div>
-      <Grid container direction="column" justify="center" alignItems="center" style={{backgroundColor:"white" ,width:"350px",height:"425px"}}>
+      <Grid container direction="column" justify="center" alignItems="center" style={{backgroundColor:"white" ,width:"450px",height:"650px"}}>
         <Grid item>
-          <Typography style={{marginTop:"0rem",color:"#2d2d2d"}} variant="h4">Sign In</Typography>
+          <Typography style={{marginTop:"0rem",color:"#2d2d2d"}} variant="h4">Add Image</Typography>
         </Grid>
         <Grid item>
-            <h1 style={{color:"red"}}>Form</h1>
+            <AddImageForm userList={props.userList}/>
         </Grid>
       </Grid>
     </Dialog>
   );
 }
 
+async function fetchData(setUserList){
+  const result = await axiosApiInstance.get(`${API_URL}/api/active_users/`)
+    
+    if (result === false){
+        //dispatch(OpenLoginDialog())
+        //dispatch(LogOut())
+        return []
+    }
+    else {
+      setUserList(result.data)
+      return result.data
+    }
+  }
+
 
 export default function LoginModal(props) {
-  const [dialogOpen,setDialogOpen] = useState(false)
+  const dispatch = useDispatch()
+  const [userList,setUserList] = useState([])
+  
+  fetchData(setUserList)
+  console.log(userList)
 
+ 
+  const [dialogOpen,setDialogOpen] = useState(false)
   const handleClickOpen = () => {
     setDialogOpen(true)
     
@@ -50,7 +75,7 @@ export default function LoginModal(props) {
   return (
     <div>
       <Button variant="contained" color="primary" style={{fontSize:"1.1rem"}} onClick={handleClickOpen}>Add Image</Button> 
-      <SimpleDialog open={dialogOpen} onClose={handleClose} />
+      <SimpleDialog open={dialogOpen} onClose={handleClose} userList={userList}/>
     </div>
   );
 }

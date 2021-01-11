@@ -99,6 +99,7 @@ function LoginForm(props) {
                 name="email"
                 type="email"
                 label="Email"
+                required
                 style={{marginBottom:"0.2rem"}}
                 />
                 <Field
@@ -106,6 +107,7 @@ function LoginForm(props) {
                 type="password"
                 label="Password"
                 name="password"
+                required
                 style={{marginBottom:"0.2rem"}}
                 />
 
