@@ -27,7 +27,7 @@ function SimpleDialog(props) {
           <CloseIcon />
         </IconButton>
       </div>
-      <Grid container direction="column" justify="center" alignItems="center" style={{backgroundColor:"white" ,width:"450px",height:"650px"}}>
+      <Grid container direction="column" justify="center" alignItems="center" style={{backgroundColor:"white" ,width:"450px",height:"700px"}}>
         <Grid item>
           <Typography style={{marginTop:"0rem",color:"#2d2d2d"}} variant="h4">Add Image</Typography>
         </Grid>
@@ -39,27 +39,27 @@ function SimpleDialog(props) {
   );
 }
 
-async function fetchData(setUserList){
-  const result = await axiosApiInstance.get(`${API_URL}/api/active_users/`)
-    
-    if (result === false){
-        //dispatch(OpenLoginDialog())
-        //dispatch(LogOut())
-        return []
-    }
-    else {
-      setUserList(result.data)
-      return result.data
-    }
-  }
-
 
 export default function LoginModal(props) {
   const dispatch = useDispatch()
   const [userList,setUserList] = useState([])
   
-  fetchData(setUserList)
-  console.log(userList)
+
+  useEffect(async() => {
+    try{
+      const result = await axiosApiInstance.get(`${API_URL}/api/active_users/`)
+      if (!result){
+          dispatch(OpenLoginDialog())
+          dispatch(LogOut())
+      }
+      else {
+        setUserList(result.data)
+    }}
+    catch (e) {
+      console.log(e)
+    }
+
+},[]);
 
  
   const [dialogOpen,setDialogOpen] = useState(false)

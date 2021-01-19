@@ -54,14 +54,18 @@ function NavBar(props) {
                 return
             }
             const data = {"token": token}
-            const result = await axiosApiInstance.post(`${API_URL}/api/auth/jwt/verify`,data)
-            if (result === false) {
-                dispatch(LogOut())
+            try{
+                const result = await axiosApiInstance.post(`${API_URL}/api/auth/jwt/verify`,data)
+                if (result === false) {
+                    dispatch(LogOut())
+                }
+                else if (result.status === 200){
+                    dispatch(LogIn())
+                }
             }
-            else if (result.status === 200){
-                dispatch(LogIn())
+            catch (e){
+                console.log(e)
             }
-
         },[]);
     
     

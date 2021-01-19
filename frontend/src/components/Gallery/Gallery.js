@@ -12,13 +12,16 @@ function Gallery(props) {
     let result
 
     useEffect(async() => {
+        try {
         result = await axiosApiInstance.get(`${API_URL}/api/images/`)
-        console.log(result)
-        if (result === false){
-            dispatch(OpenLoginDialog())
-            dispatch(LogOut())
+            if (!result){
+                dispatch(OpenLoginDialog())
+                dispatch(LogOut())
+        }}
+        catch (e) {
+            console.log(e)
         }
-    },[]);
+        },[]);
 
     return (
         <Grid style={{height:"100%",width:"100%",marginTop:"2rem"}} container direction="column" justify="center" alignItems="center">

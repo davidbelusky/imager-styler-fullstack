@@ -1,56 +1,95 @@
 import React, {useState} from 'react';
 import { TextField } from 'formik-material-ui';
 import { Button, Typography } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik';
+import { makeStyles } from '@material-ui/core/styles';
+import { Formik, Field } from 'formik';
 import { CheckboxWithLabel } from 'formik-material-ui';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import {axiosApiInstance} from "../../axiosTokenHandle"
+import {API_URL} from '../../constants'
+import { useDispatch  } from 'react-redux'
+import { LogOut, OpenLoginDialog} from "../../redux/actions"
+import axios from "axios"
+
+
+
+const useStyles = makeStyles((theme) => ({
+    formInput: {
+        marginBottom: "0.2rem",
+        }
+  }));
 
 function AddImageForm(props) {
-    const [values, setValues] = useState({
-        imageName: "",
-        imageDescription:""
-      });
+    const dispatch = useDispatch()
+    const classes = useStyles();
+    const [imageNameValue, setImageNameValue] = useState("")
+    const [imageDescrValue, setImageDescrValue] = useState("")
+    const [imageFile, setImageFile] = useState(null)
+    const [userShares,setUserShares] = useState([])
+
     function handleChange (name,event) {
-        setValues({ ...values, [name]: event.target.value });
+        if (name === "imageName") {
+            setImageNameValue(event.target.value)
+        }
+        else if (name === "imageDescription") {
+            setImageDescrValue(event.target.value)
+        }
       };
 
-    /*const usersList = [
-        {"id":1,"name":"David"},
-        {"id":2,"name":"Jano"},
-        {"id":3,"name":"Palo"},
-        {"id":4,"name":"Erik"},
-    ]*/
     const usersList=props.userList
-
-    
+   
     return (
         <Formik
             initialValues={{
+                imageWidth: "",
+                imageHeight: "",
               }}
             validate={values => {
             const errors = {}
             
-            const widthNum = Number(values.imageWidth)
-            const heightNum = Number(values.imageHeight)
-            if (Number.isInteger(widthNum) === false){
-                errors.imageWidth = "Width can be only number"
+            if (values.imageWidth !== ""){
+                const widthNum = Number(values.imageWidth)
+                if (!Number.isInteger(widthNum)){
+                    errors.imageWidth = "Width can be only number"
+                }
+                if (widthNum > 400 || widthNum < 20){
+                    errors.imageWidth = "Width must be between 20-400"
+                }
             }
-            if (widthNum > 400 || widthNum < 20){
-                errors.imageWidth = "Width must be between 20-400"
+            if (values.imageHeight !== ""){
+                const heightNum = Number(values.imageHeight)
+                if (!Number.isInteger(heightNum)){
+                    errors.imageHeight = "Height can be only number"
+                }
+                if (heightNum > 400 || heightNum < 20){
+                    errors.imageHeight = "HeightWidth must be between 20-400"
+                }
             }
-            if (Number.isInteger(heightNum) === false){
-                errors.imageHeight = "Height can be only number"
-            }
-            if (heightNum > 400 || heightNum < 20){
-                errors.imageHeight = "HeightWidth must be between 20-400"
-            }
-            
             
             return errors;
             }}
             
-            onSubmit={(values, { setSubmitting }) => {
-                console.log('f')
+            onSubmit={async (values, { setSubmitting }) => {
+                setSubmitting(false);
+                const formData = new FormData();
+                // Input all share user IDs to form data
+                userShares.map((item) => {
+                    formData.append("share_user",item.id)
+                })
+                formData.append("img_name",imageNameValue)
+                formData.append("img_description",imageDescrValue)
+                formData.append("uploaded_image",imageFile)
+                formData.append("width",Number(values.imageWidth))
+                formData.append("height",Number(values.imageHeight))
+                try {
+                    const result = await axios.post(`${API_URL}/api/images/`,formData)
+                        if (!result){
+                            dispatch(OpenLoginDialog())
+                            dispatch(LogOut())
+                    }}
+                    catch (e) {
+                        console.log(e)
+                    }
               }}
             >
             {({ submitForm, isSubmitting }) => (
@@ -60,8 +99,8 @@ function AddImageForm(props) {
                 name="imageName"
                 required
                 label="Image Name"
-                style={{marginBottom:"0.2rem"}}
-                helperText={`${values.imageName.length}/${25}`}
+                className={classes.formInput}
+                helperText={`${imageNameValue.length}/${25}`}
                 inputProps={{
                     maxLength: 25
                   }}
@@ -73,8 +112,8 @@ function AddImageForm(props) {
                 label="Image description"
                 multiline
                 rowsMax={2}
-                style={{marginBottom:"0.2rem"}}
-                helperText={`${values.imageDescription.length}/${50}`}
+                className={classes.formInput}
+                helperText={`${imageDescrValue.length}/${50}`}
                 inputProps={{
                     maxLength: 50
                   }}
@@ -91,40 +130,44 @@ function AddImageForm(props) {
                 component={TextField}
                 name="imageWidth"
                 label="Width"
-                style={{marginBottom:"0.2rem"}}
+                className={classes.formInput}
                 helperText="Max width is 400px"
                 />
                 <Field
                 component={TextField}
                 name="imageHeight"
                 label="Height"
-                style={{marginBottom:"0.2rem"}}
+                className={classes.formInput}
                 helperText="Max Height is 400px"
                 />
                 <Autocomplete
-                style={{width: "217px"}}
+                style={{width: "217px",maxHeight:"120px"}}
                 multiple
                 limitTags={1}
                 options={usersList}
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => option.email}
+                onChange={(event, value) => setUserShares(value.slice(-2))}
+                value = {userShares}
                 renderInput={(params) => (
                 <Field 
                 component={TextField}
                 {...params}
                 name="userShare"
-                label="Users share"
+                rowsMax={2}
+                size="small"
+                label="User shares (Max 2 users)"
                 helperText="Share image with other users"
-                style={{marginBottom:"0.2rem"}}
+                className={classes.formInput}
                  />
-                
+                 
                 )}/>
-
-                
+                <Typography style={{marginTop:"0.7rem"}} component="p">
+                    Select image (jpg, jpeg)
+                </Typography>
+                <input required id="file" name="file" type="file" accept=".jpeg,.jpg" className={classes.formInput} style={{maxWidth:"225px"}} onChange={(e) => 
+                    setImageFile(e.currentTarget.files[0])}/>
 
                 <div style={{maxWidth:"210px"}}>
-                <Typography style={{marginTop:"2rem",color:"red", marginTop:"1rem"}} component="p">
-                    daa
-                </Typography>
                 </div>
 
                 <Button type="submit" variant="contained" color="secondary"  style={{marginTop:"1.2rem", marginBottom:"0.2rem"}}>
