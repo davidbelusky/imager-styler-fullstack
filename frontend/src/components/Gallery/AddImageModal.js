@@ -32,7 +32,7 @@ function SimpleDialog(props) {
           <Typography style={{marginTop:"0rem",color:"#2d2d2d"}} variant="h4">Add Image</Typography>
         </Grid>
         <Grid item>
-            <AddImageForm userList={props.userList}/>
+            <AddImageForm userList={props.userList} setImages={props.setImages} handleClose={handleClose}/>
         </Grid>
       </Grid>
     </Dialog>
@@ -75,7 +75,7 @@ export default function LoginModal(props) {
   return (
     <div>
       <Button variant="contained" color="primary" style={{fontSize:"1.1rem"}} onClick={handleClickOpen}>Add Image</Button> 
-      <SimpleDialog open={dialogOpen} onClose={handleClose} userList={userList}/>
+      <SimpleDialog open={dialogOpen} onClose={handleClose} userList={userList} setImages={props.setImages}/>
     </div>
   );
 }

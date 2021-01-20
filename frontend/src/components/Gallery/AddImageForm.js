@@ -10,6 +10,7 @@ import {API_URL} from '../../constants'
 import { useDispatch  } from 'react-redux'
 import { LogOut, OpenLoginDialog} from "../../redux/actions"
 import axios from "axios"
+import {getImages} from "./Gallery" 
 
 
 
@@ -71,6 +72,7 @@ function AddImageForm(props) {
             
             onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(false);
+                
                 const formData = new FormData();
                 // Input all share user IDs to form data
                 userShares.map((item) => {
@@ -81,12 +83,21 @@ function AddImageForm(props) {
                 formData.append("uploaded_image",imageFile)
                 formData.append("width",Number(values.imageWidth))
                 formData.append("height",Number(values.imageHeight))
+                formData.append("favourite",values.favourite === undefined ? false : values.favourite)
+                
                 try {
                     const result = await axios.post(`${API_URL}/api/images/`,formData)
                         if (!result){
                             dispatch(OpenLoginDialog())
                             dispatch(LogOut())
-                    }}
+                        }
+                        else{
+                            // update images with new added image
+                            const result = await getImages()
+                            props.setImages(result)
+                            props.handleClose()
+                        }
+                }
                     catch (e) {
                         console.log(e)
                     }
@@ -113,9 +124,9 @@ function AddImageForm(props) {
                 multiline
                 rowsMax={2}
                 className={classes.formInput}
-                helperText={`${imageDescrValue.length}/${50}`}
+                helperText={`${imageDescrValue.length}/${40}`}
                 inputProps={{
-                    maxLength: 50
+                    maxLength: 40
                   }}
                 onChange={(e) => handleChange("imageDescription", e)}
                 />
