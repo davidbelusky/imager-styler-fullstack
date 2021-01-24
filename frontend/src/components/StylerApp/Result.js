@@ -9,16 +9,17 @@ const useStyles = makeStyles((theme) => ({
     resultLayout:{
         display:"flex",
         flexDirection:"column",
-        alignItems:"center"
+        alignItems:"center",
+        height:"100%",
+        justifyContent:"center"
     },
   }));
 
 function Result(props) {
     const classes = useStyles();
-    console.log(props.resultImage)
 
     return (
-        <div>
+        <div style={{height: "496px"}}>
             {props.resultImage ? (
                 <div className={classes.resultLayout}>
                     <img style={{maxWidth: "500px", maxHeight: "380px",borderRadius: "4%"}} src={props.resultImage}/>

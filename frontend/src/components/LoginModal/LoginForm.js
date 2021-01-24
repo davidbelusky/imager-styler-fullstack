@@ -61,7 +61,6 @@ async function LogInUser(handleClose,values,setInfoMessage,dispatch){
 function LoginForm(props) {
     const [infoMessage, setInfoMessage] = useState("");
     const dispatch = useDispatch()
-    console.log(dispatch)
 
     return (
             <Formik

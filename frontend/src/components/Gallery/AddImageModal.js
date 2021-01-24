@@ -64,6 +64,10 @@ export default function LoginModal(props) {
  
   const [dialogOpen,setDialogOpen] = useState(false)
   const handleClickOpen = () => {
+    if (props.images.length >= 10){
+      alert("You already have 10 images. Please delete any image to add a new one")
+      return
+    }
     setDialogOpen(true)
     
   };

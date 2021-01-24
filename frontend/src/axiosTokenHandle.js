@@ -38,7 +38,6 @@ axiosApiInstance.interceptors.response.use((response) => {
   if (error.response.status === 401 && !originalRequest._retry) {
     originalRequest._retry = true;
     const accessTokenUpdated = await refreshAccessToken();  
-    console.log(originalRequest)
     if (accessTokenUpdated === false){
       return false
     }

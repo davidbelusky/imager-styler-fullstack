@@ -11,6 +11,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence,AnimateSharedLayout } from 'framer-motion'
 import { demoAnimate,stylerChangePage } from '../../variants'
+import GallerySelectModal from './Features/GalleryImageModal/GallerySelectModal'
 
 
 
@@ -18,16 +19,18 @@ const useStyles = makeStyles((theme) => ({
     appTitle: {
         width: "100%",
         height:"100%",
-        marginTop: "2rem",
+        marginTop: "1rem",
 
     },
     appBody:{
         width: "100%",
-        height:"35rem",
         display:"flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"
+    },
+    btnControls: {
+        marginTop:"2rem"
     }
   }));
 
@@ -60,7 +63,10 @@ export default function StylerApp() {
         // Return action component based on step state
         switch(step) {
           case 1:
-            return <DragnDrop setFile={setFile} file={file}/>
+            return <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginTop:"2rem"}}>
+                        <GallerySelectModal setFile={setFile}/>
+                        <DragnDrop setFile={setFile} file={file}/>
+                    </div>
           case 2:
               return <DragnDrop setFile={setFileStyle} file={fileStyle}/>
           case 3:
@@ -68,7 +74,7 @@ export default function StylerApp() {
           case 4:
               return <Result resultImage={resultImage}/>
           default:
-            return 'abc';
+            return null;
         }
       }
 
@@ -136,7 +142,6 @@ export default function StylerApp() {
         animate={screenAnimation}
         variants={stylerChangePage}
         >
-            
             <Grid container direction="column" justify="center" alignItems="center">
                     <Grid item xs={12} sm={6}>
                         <div className={classes.appTitle}>
@@ -148,29 +153,29 @@ export default function StylerApp() {
                             {stepComponent()}
                         </div>
                     </Grid>
+                    
+                </Grid>
+
+                <Grid container direction="column" justify="center" alignItems="center">
                     <Grid item xs={12} sm={6}>
+                    {(step > 1 && step < 4)&&
+                        <Button className={classes.btnControls} style={{fontSize:"1.5rem" ,width:"10rem" ,marginRight:"2rem"}} variant="outlined" color="primary" onClick={handleClick}>
+                            Back
+                        </Button>
+                    }
 
-                        {(step > 1 && step < 4)&&
-                            <Button style={{fontSize:"1.5rem" ,width:"10rem" ,marginRight:"2rem"}} variant="outlined" color="primary" onClick={handleClick}>
-                                Back
-                            </Button>
-                        }
+                    {step < 4 &&
+                        <Button className={classes.btnControls} style={{fontSize:"1.5rem" ,width:"10rem"}}
+                        variant="contained" color="primary" onClick={handleClick}>
+                            Next
+                        </Button>
+                    }
 
-                        
-                        {step < 4 &&
-                            <Button style={{fontSize:"1.5rem" ,width:"10rem"}}
-                             variant="contained" color="primary" onClick={handleClick}>
-                                Next
-                            </Button>
-                        }
-
-                        {step === 4 &&
-                            <Button style={{fontSize:"1.5rem" ,width:"13rem"}} variant="contained" color="primary" onClick={handleClick}>
-                                Try again
-                            </Button>
-                        }
-                        
-                     
+                    {step === 4 &&
+                        <Button style={{fontSize:"1.5rem" ,width:"13rem"}} variant="contained" color="primary" onClick={handleClick}>
+                            Try again
+                        </Button>
+                    }
                     </Grid>
                 </Grid>
 

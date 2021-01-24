@@ -9,8 +9,7 @@ import {axiosApiInstance} from "../../axiosTokenHandle"
 import {API_URL} from '../../constants'
 import { useDispatch  } from 'react-redux'
 import { LogOut, OpenLoginDialog} from "../../redux/actions"
-import axios from "axios"
-import {getImages} from "./Gallery" 
+import {getImages} from "../../requests/getImages"
 
 
 
@@ -27,6 +26,7 @@ function AddImageForm(props) {
     const [imageDescrValue, setImageDescrValue] = useState("")
     const [imageFile, setImageFile] = useState(null)
     const [userShares,setUserShares] = useState([])
+    const [errorMessage, setErrorMessage] = useState("")
 
     function handleChange (name,event) {
         if (name === "imageName") {
@@ -86,7 +86,7 @@ function AddImageForm(props) {
                 formData.append("favourite",values.favourite === undefined ? false : values.favourite)
                 
                 try {
-                    const result = await axios.post(`${API_URL}/api/images/`,formData)
+                    const result = await axiosApiInstance.post(`${API_URL}/api/images/`,formData)
                         if (!result){
                             dispatch(OpenLoginDialog())
                             dispatch(LogOut())
@@ -99,6 +99,10 @@ function AddImageForm(props) {
                         }
                 }
                     catch (e) {
+                        if (Object.keys(e.response.data).length > 0){
+                            const first_message = Object.keys(e.response.data)[0]
+                            setErrorMessage(e.response.data[first_message])
+                        }
                         console.log(e)
                     }
               }}
@@ -180,6 +184,9 @@ function AddImageForm(props) {
 
                 <div style={{maxWidth:"210px"}}>
                 </div>
+                <Typography style={{marginTop:"0.7rem",color:"red", maxWidth:"217px"}} component="p">
+                    {errorMessage}
+                </Typography>
 
                 <Button type="submit" variant="contained" color="secondary"  style={{marginTop:"1.2rem", marginBottom:"0.2rem"}}>
                     Confirm

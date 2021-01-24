@@ -6,11 +6,12 @@ import {DropzoneArea} from 'material-ui-dropzone'
 function DragnDrop(props) {
     function handleChange(file){
         if (file.length != 0) {
+            console.log(file[0])
             props.setFile({"file":file[0],"url":URL.createObjectURL(file[0])});
         }
       }
     return (
-        <div style={{display:"flex", flexDirection:"column", width: "30rem", height: "100%",marginTop:"1rem"}}>
+        <div style={{display:"flex", flexDirection:"column", width: "30rem", height: "496px",marginTop:"1rem"}}>
             <DropzoneArea 
                 acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
                 maxFileSize={3000000}

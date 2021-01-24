@@ -49,7 +49,7 @@ export default function BodyMain() {
                                 <Typography className={classes.secondInfoText} color="primary" variant="h6">
                                     Simple tools for your big ideas.Start your free website trial today, no credit card required.
                                 </Typography>
-                                <Button variant="contained" color="primary" className={classes.tryItButton} component={Link} to="/styler">
+                                <Button variant="contained" color="primary" className={classes.tryItButton} component={Link} to="/styler_demo">
                                     Try it
                                 </Button>
                             </div>

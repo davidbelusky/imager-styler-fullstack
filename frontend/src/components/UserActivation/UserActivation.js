@@ -10,7 +10,6 @@ function activateUser(uid,token,setMessage,setMessageColor){
     const activateApiUrl = `${API_URL}/api/auth/users/confirm/activation/${uid}/${token}/`
     axios.post(activateApiUrl)
     .then(response => { 
-        console.log(response)
         if (response.status === 204){
             setMessageColor("#00e400")
             setMessage("Account was successfully activated!")

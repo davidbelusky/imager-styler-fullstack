@@ -79,7 +79,6 @@ function NavBar(props) {
 
      async function images(){
         const result = await axiosApiInstance.get(`${API_URL}/api/images/`)
-        console.log(result)
         if (result === false){
             dispatch(OpenLoginDialog())
             dispatch(LogOut())
@@ -91,7 +90,7 @@ function NavBar(props) {
          dispatch(LogOut())
      }
     // If URL location is styler hide navbar
-    if (urlLocation === "/styler"){
+    if (urlLocation === "/styler_demo"){
         return null
     }
 

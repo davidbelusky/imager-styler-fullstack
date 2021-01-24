@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, Typography } from '@material-ui/core';
 
 import {API_URL} from '../../constants'
 import {axiosApiInstance,refreshAccessToken} from "../../axiosTokenHandle"
@@ -9,35 +9,19 @@ import AddImageModal from "./AddImageModal"
 import GalleryCard from "./GalleryCard"
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
+import {getImages} from "../../requests/getImages"
 
 const useStyles = makeStyles((theme) => ({
     mainGalleryCards: {
         display:"flex",
         justifyContent: "center",
-        marginTop: "3rem"
+        marginTop: "3rem",
+        width:"100%"
     },
     galleryCards:{
         width:"80%",
     }
     }));
-
- 
-
-export async function getImages(){
-    try {
-        const result = await axiosApiInstance.get(`${API_URL}/api/images/`)
-            if (!result){
-                return false
-                }
-            else {
-                return result.data
-            }
-        }
-        catch (e) {
-            console.log(e)
-            return false
-        }}
-       
 
 function Gallery(props) {
     const classes = useStyles();
@@ -46,6 +30,7 @@ function Gallery(props) {
 
     useEffect(async() => {
         const result = await getImages()
+
         if (result === false) {
             dispatch(OpenLoginDialog())
             dispatch(LogOut())
@@ -58,11 +43,14 @@ function Gallery(props) {
 
     return (
         <div style={{display:"flex",flexDirection:"column",marginTop:"2rem", marginBottom:"1rem",alignItems:"center"}}>
-             <AddImageModal setImages={setImages}/>
+             <AddImageModal setImages={setImages} images={images}/>
+             <Typography color="primary" variant="h6" style={{marginTop:"0.5rem"}}>
+                A maximum of 10 images is allowed
+             </Typography>
             <div className={classes.mainGalleryCards}>
                 <Box className={classes.galleryCards}>
                 <Grid container direction="row" justify="center" alignItems="flex-start" spacing={3}>
-                    {images.map((item,i) => <GalleryCard data={item}/>)}
+                    {images.map((item,i) => <GalleryCard data={item} setImages={setImages} images={images}/>)}
                 </Grid>
                 </Box>
             </div>
