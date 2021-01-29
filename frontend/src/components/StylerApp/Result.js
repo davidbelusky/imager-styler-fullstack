@@ -19,7 +19,7 @@ function Result(props) {
     const classes = useStyles();
 
     return (
-        <div style={{height: "496px"}}>
+        <div style={{height: "539px"}}>
             {props.resultImage ? (
                 <div className={classes.resultLayout}>
                     <img style={{maxWidth: "500px", maxHeight: "380px",borderRadius: "4%"}} src={props.resultImage}/>

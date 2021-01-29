@@ -75,7 +75,7 @@ function NavBar(props) {
     const classes = useStyles();
 
     const menuItemsList = [{'name':'Home',"link":"/"},{'name':'Styler App',"link":"/styler_app"}, {'name':'Gallery',"link":"/gallery"}, {'name':'Styled Gallery',"link":"/styled_gallery"},
-     {'name':'Shared images',"link":"/shared_images"}, {'name':'Styles',"link":"/styles"}]
+     {'name':'Shared images',"link":"/shared_images"}]
 
      async function images(){
         const result = await axiosApiInstance.get(`${API_URL}/api/images/`)
@@ -90,7 +90,7 @@ function NavBar(props) {
          dispatch(LogOut())
      }
     // If URL location is styler hide navbar
-    if (urlLocation === "/styler_demo"){
+    if (urlLocation === "/styler_app"){
         return null
     }
 
@@ -108,7 +108,6 @@ function NavBar(props) {
                         <MenuList className={classes.menuList}>
                             {menuItemsList.map((item,i) => <NavBarItem key={i} menuName={item.name} menuLink = {item.link}/>)}
                         </MenuList>
-                    <Button onClick={images} color="primary"> daa</Button>
                     </div>
                     : <Typography color="primary" variant="h5">Log in to see more features</Typography>
                     }

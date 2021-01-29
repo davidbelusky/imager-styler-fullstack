@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +12,10 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence,AnimateSharedLayout } from 'framer-motion'
 import { demoAnimate,stylerChangePage } from '../../variants'
 import GallerySelectModal from './Features/GalleryImageModal/GallerySelectModal'
+import { useSelector } from 'react-redux'
+import StylerForm from "./Features/StylerForm"
+import {getStyledImages} from "../../requests/getStyledImages"
+import { useHistory } from 'react-router-dom'
 
 
 
@@ -41,34 +45,87 @@ export default function StylerApp() {
 
     const [step, setStep] = useState(1);
     const [file, setFile] = useState("");
+    const [imageName, setImageName] = useState("");
     const [fileStyle, setFileStyle] = useState("");
     const [resultImage,setResultImage] = useState("");
     const [screenAnimation,setScreenAnimate] = useState("stay")
     const actualStepData = steps.filter(x => x.step === step)[0]
+    const isLogged = useSelector(state => state.isLogged)
+    const [styledImageNames, setStyledImageNames] = useState([])
+    const history = useHistory();
 
-    function startStyleImage () {
+    useEffect(async() => {
+        const data = await getStyledImages()
+        const imageNames = []
+        if (!data && isLogged) {
+            alert("API is down please try again later")
+            history.push({
+                pathname: '/',
+              });
+            return
+        }
+        
+        if (isLogged){
+            data.map(function(item, i){
+                imageNames.push(item.img_name)
+              })
+            setStyledImageNames(imageNames)
+        }
+    },[]);
+
+
+    async function startStyleImage () {
         const formData = new FormData();
+        let styleEndpoint = "demo_styler/"
+        let styleImageKey = "style_image"
+        let demoStyle = true
+        
+        // if file[file] is integer user doesnt use demo styler
+        if (Number.isInteger(file['file'])){
+            styleEndpoint = "styled_images/"
+            styleImageKey = "styled_image"
+            demoStyle = false
+            formData.append("img_name",imageName)
+        }
+        formData.append(styleImageKey,fileStyle['file'])
         formData.append("original_image",file['file'])
-        formData.append('style_image',fileStyle['file'])
-
-      axios.post(`${API_URL}/api/demo_styler/`, formData)
-        .then(response => {   
+    
+    try {
+        const response = await axios.post(`${API_URL}/api/${styleEndpoint}`, formData)
+        if (demoStyle){
             setResultImage(response.data.style_image)
-        })
-      .catch(error => { console.log(error.request)
-     } );
-
+          }
+          else {
+            setResultImage(response.data.styled_image)
+          }
+    }
+    catch (e){
+        console.log(e)
+        return
+        }
     }
     function stepComponent() {
         // Return action component based on step state
         switch(step) {
           case 1:
-            return <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginTop:"2rem"}}>
-                        <GallerySelectModal setFile={setFile}/>
-                        <DragnDrop setFile={setFile} file={file}/>
+            return <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginTop:"2rem", height:"539px"}}>
+                        {
+                            isLogged ? 
+                            <div>
+                                <StylerForm setImageName={setImageName} imageName={imageName}/>
+                                <GallerySelectModal setFile={setFile}/>
+                            </div>
+                            :
+                            <DragnDrop setFile={setFile} file={file}/>
+                        }
+                        { file.file && <img style={{maxWidth: "400px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={file.url}/>}
+                        
                     </div>
           case 2:
-              return <DragnDrop setFile={setFileStyle} file={fileStyle}/>
+              return  <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginTop:"2rem",height:"539px"}}>
+                        <DragnDrop setFile={setFileStyle} file={fileStyle}/>
+                        { fileStyle.file && <img style={{maxWidth: "400px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={fileStyle.url}/>}
+                    </div>
           case 3:
               return <Confirm file={file} fileStyle={fileStyle}/>
           case 4:
@@ -91,10 +148,10 @@ export default function StylerApp() {
             newStep = 1
         }
         setTimeout(
-            () => {setStep(newStep)},750
+            () => {setStep(newStep)},400
         )
         setTimeout(
-            () => {setScreenAnimate("stay")},1000
+            () => {setScreenAnimate("stay")},800
         )
 
     }
@@ -111,6 +168,14 @@ export default function StylerApp() {
                 alert("Please select style image")
                 return
                 }
+            if (!imageName && isLogged){
+                alert("Please input image name")
+                return
+            }
+            if (styledImageNames.includes(imageName)){
+                alert(`Name ${imageName} already exist. Please change image name`)
+                return
+            }
             
             if (step === 3){
                 startStyleImage()
@@ -126,6 +191,7 @@ export default function StylerApp() {
             setFile("")
             setFileStyle("")
             setResultImage("")
+            setImageName("")
             startScreenAnimate("tryAgain")
         }
     }
@@ -156,7 +222,7 @@ export default function StylerApp() {
                     
                 </Grid>
 
-                <Grid container direction="column" justify="center" alignItems="center">
+                <Grid container direction="column" justify="center" alignItems="center" >
                     <Grid item xs={12} sm={6}>
                     {(step > 1 && step < 4)&&
                         <Button className={classes.btnControls} style={{fontSize:"1.5rem" ,width:"10rem" ,marginRight:"2rem"}} variant="outlined" color="primary" onClick={handleClick}>

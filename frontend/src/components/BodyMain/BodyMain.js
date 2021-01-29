@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import style_transfer_image from "../../images/static/style_transfer_example.png"
 import { Link } from 'react-router-dom'
-
+import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,18 +39,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function BodyMain() {
     const classes = useStyles();
+    const isLogged = useSelector(state => state.isLogged)
+    let infoText
+    if (!isLogged){
+        infoText = "Try demo styler now without registration. Just pick image and style image from your PC."
+    }
+    else{
+        infoText = "Choose image from your gallery then select style image from PC and run stylizing. Result will be saved into your Styled images gallery"
+    }
+
     return (
         <div>
             <Grid container justify="center" spacing={5}>
                     <Grid item xs={12} sm={6}>
                         <div className={classes.infoLayout}>
                             <div className={classes.infoText}>
-                                <Typography color="primary" variant="h3">Everything you need to grow online.</Typography>
+                                <Typography color="primary" variant="h3"> {isLogged ? "Styler App": "Demo styler"}</Typography>
                                 <Typography className={classes.secondInfoText} color="primary" variant="h6">
-                                    Simple tools for your big ideas.Start your free website trial today, no credit card required.
+                                    {infoText}
                                 </Typography>
-                                <Button variant="contained" color="primary" className={classes.tryItButton} component={Link} to="/styler_demo">
-                                    Try it
+                                <Button variant="contained" color="primary" className={classes.tryItButton} component={Link} to="/styler_app">
+                                    {isLogged ? "Run app" : "Try it"}
                                 </Button>
                             </div>
                         </div>

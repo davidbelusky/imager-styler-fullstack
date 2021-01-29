@@ -6,6 +6,7 @@ import Trying from "./components/Trying"
 import UserActivation from './components/UserActivation/UserActivation'
 import Gallery from "./components/Gallery/Gallery"
 import NavBar from "./components/Navbar/NavBar"
+import StyledGallery from "./components/StyledGallery/StyledGallery"
 import { useSelector } from 'react-redux'
 
 
@@ -19,11 +20,13 @@ function App() {
           <NavBar/>
           <Switch>
             <Route path="/" exact component={Main} />
-            <Route path="/styler_demo" exact component={StylerApp} />
-            <Route path="/styler" exact component={StylerApp} />
+            <Route path="/styler_app" exact component={StylerApp} />
 
             <Route path="/gallery" exact>
                 {isLogged ? <Gallery /> : <Redirect to="/" />}
+            </Route>
+            <Route path="/styled_gallery" exact>
+                {isLogged ? <StyledGallery /> : <Redirect to="/" />}
             </Route>
             
             <Route path="/t" exact component={Trying} />

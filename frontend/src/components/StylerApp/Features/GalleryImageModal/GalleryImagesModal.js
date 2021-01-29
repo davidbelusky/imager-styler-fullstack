@@ -27,7 +27,7 @@ function GalleryImagesModal(props) {
     return (
         <div style={{height:"100%",width:"100%",backgroundColor:"black"}}>
             <Grid container direction="row" justify="center" alignItems="flex-start" spacing={3} style={{width:"75%", margin:"auto"}}>
-                {images.map((item,i) => <GalleryImageModal data={item} setFile={props.setFile}/>)}
+                {images.map((item,i) => <GalleryImageModal data={item} setFile={props.setFile} setOpen={props.setOpen}/>)}
             </Grid>
             
         </div>

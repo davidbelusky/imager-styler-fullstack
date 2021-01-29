@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DeleteIcon from '@material-ui/icons/Delete';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import {axiosApiInstance} from "../../../axiosTokenHandle"
 import {API_URL} from "../../../constants"
 import { useDispatch  } from 'react-redux'
@@ -12,7 +12,7 @@ import { LogOut, OpenLoginDialog} from "../../../redux/actions"
 
 
 
-export default function DeleteModal(props) {
+export default function FavoriteModal(props) {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch()
 
@@ -45,8 +45,8 @@ export default function DeleteModal(props) {
     }
 
   return (
-    <div>
-      <DeleteIcon onClick={handleClickOpen}  style={{paddingTop:"0.5rem",cursor: "pointer", color:"#d13c2e",fontSize:"1.8rem"}}/>
+    <div style={{marginRight:"0.8rem"}}>
+      <FavoriteIcon onClick={handleClickOpen} style={{paddingTop:"0.5rem",cursor: "pointer",fontSize:"1.8rem"}}/>
       <Dialog
         open={open}
         onClose={handleClose}

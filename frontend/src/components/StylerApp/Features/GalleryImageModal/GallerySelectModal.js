@@ -58,7 +58,7 @@ export default function GallerySelectModal(props) {
           </Toolbar>
         </AppBar>
 
-        <GalleryImagesModal setFile={props.setFile}/>
+        <GalleryImagesModal setFile={props.setFile} setOpen={setOpen}/>
         
       </Dialog>
     </div>

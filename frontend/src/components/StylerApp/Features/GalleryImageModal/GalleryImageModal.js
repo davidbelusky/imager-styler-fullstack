@@ -11,11 +11,13 @@ export default function GalleryImageModal(props) {
     }, []);
     
     function selectImage(){
-        props.setFile({"file":props.data.uploaded_image,"url":props.data.uploaded_image})
+        // Select image from gallery by id
+        props.setFile({"file":props.data.id,"url":props.data.uploaded_image})
+        props.setOpen(false)
     }
 
     return (
-        <Grid data-aos="zoom-in" data-aos-once="true" data-aos-offset="10" data-aos-duration="1000"
+        <Grid data-aos="zoom-in" data-aos-once="true" data-aos-offset="10" data-aos-duration="500"
         item xs={12} sm={6} md={4} lg={3} xl={3}>
            <Card onClick={selectImage} style={{height:"250px", width:"250px"}}>
                <CardMedia

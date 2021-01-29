@@ -115,9 +115,9 @@ function AddImageForm(props) {
                 required
                 label="Image Name"
                 className={classes.formInput}
-                helperText={`${imageNameValue.length}/${25}`}
+                helperText={`${imageNameValue.length}/${15}`}
                 inputProps={{
-                    maxLength: 25
+                    maxLength: 15
                   }}
                 onChange={(e) => handleChange("imageName", e)}
                 />
@@ -128,9 +128,9 @@ function AddImageForm(props) {
                 multiline
                 rowsMax={2}
                 className={classes.formInput}
-                helperText={`${imageDescrValue.length}/${40}`}
+                helperText={`${imageDescrValue.length}/${25}`}
                 inputProps={{
-                    maxLength: 40
+                    maxLength: 25
                   }}
                 onChange={(e) => handleChange("imageDescription", e)}
                 />

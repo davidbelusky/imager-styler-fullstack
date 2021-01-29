@@ -8,9 +8,11 @@ const useStyles = makeStyles((theme) => ({
     confirmLayout: {
         width: "100%",
         display: "flex",
+        height: "539px",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        marginTop:"2rem",
         "& img": {
             marginBottom:"2rem",
 
