@@ -11,7 +11,7 @@ import { useDispatch  } from 'react-redux'
 import { LogOut, OpenLoginDialog} from "../../../redux/actions"
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
-
+import {getActiveUsers} from "../../../requests/getActiveUsers"
 
 
 
@@ -22,21 +22,31 @@ export default function ShareModal(props) {
   const [userList,setUserList] = useState([])
 
   useEffect(async() => {
-    try{
-      const result = await axiosApiInstance.get(`${API_URL}/api/active_users/`)
-      if (!result){
-          dispatch(OpenLoginDialog())
-          dispatch(LogOut())
-      }
-      else {
-        setUserList(result.data)
-    }}
-    catch (e) {
-      console.log(e)
-    }
 
+    const result = await getActiveUsers()
+    if (!result){
+        dispatch(OpenLoginDialog())
+        dispatch(LogOut())
+    }
+    else {
+      setUserList(result)
+   }
+    
+    setUserShares(getAlreadySharedUsers(result))
+    
 },[]);
 
+function getAlreadySharedUsers(result){
+  // Get and set User shares which are already set for image
+  const shareUsersIdArray = props.data.share_user
+  const sharedUserEmails = result.filter(function(item){
+    if (shareUsersIdArray.includes(item.id)){
+      return true
+    }
+    return false
+  }).map(function(item) {return item})
+  return sharedUserEmails
+}
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -53,10 +63,10 @@ export default function ShareModal(props) {
     userShares.map((item) => {
         formData.append("share_user",item.id)
     })
-    formData.append("img_name",props.imageName)
+    formData.append("img_name",props.data.img_name)
     
     try {
-      const result = await axiosApiInstance.put(`${API_URL}/api/${imageUrl}/${props.imageId}`,formData)
+      const result = await axiosApiInstance.put(`${API_URL}/api/${imageUrl}/${props.data.id}`,formData)
           if (!result){
               dispatch(OpenLoginDialog())
               dispatch(LogOut())
@@ -78,9 +88,9 @@ export default function ShareModal(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogContent style={{marginTop:"1rem"}}>
+        <DialogContent style={{marginTop:"1rem", maxWidth:"300px"}}>
           <DialogContentText id="alert-dialog-description">
-                Enter the users you want to share this picture with or can delete already shared users
+                Enter the active users you want to share this picture with or you can delete already shared users. Filled users are already shared.
           </DialogContentText>
         </DialogContent>
 
@@ -109,7 +119,7 @@ export default function ShareModal(props) {
             Cancel
           </Button>
           <Button onClick={shareImage} variant="contained" color="secondary" autoFocus>
-            Share
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>

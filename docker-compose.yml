@@ -19,7 +19,7 @@ services:
   db:
     image: postgres:12.0-alpine
     volumes:
-      - pg_datas:/var/lib/postgresql/datas/
+      - pg_data:/var/lib/postgresql/datas/
     env_file:
       - ./db/.env
     ports:
@@ -40,4 +40,4 @@ services:
 volumes:
   django_static:
   django_media:
-  pg_datas:
+  pg_data:

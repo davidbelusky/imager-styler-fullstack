@@ -7,6 +7,7 @@ import UserActivation from './components/UserActivation/UserActivation'
 import Gallery from "./components/Gallery/Gallery"
 import NavBar from "./components/Navbar/NavBar"
 import StyledGallery from "./components/StyledGallery/StyledGallery"
+import SharedGallery from "./components/SharedGallery/SharedGallery"
 import { useSelector } from 'react-redux'
 
 
@@ -27,6 +28,9 @@ function App() {
             </Route>
             <Route path="/styled_gallery" exact>
                 {isLogged ? <StyledGallery /> : <Redirect to="/" />}
+            </Route>
+            <Route path="/shared_gallery" exact>
+                {isLogged ? <SharedGallery /> : <Redirect to="/" />}
             </Route>
             
             <Route path="/t" exact component={Trying} />

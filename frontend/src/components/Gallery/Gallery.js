@@ -41,8 +41,11 @@ function Gallery(props) {
     return (
         <div style={{display:"flex",flexDirection:"column",marginTop:"2rem", marginBottom:"1rem",alignItems:"center"}}>
              <AddImageModal setImages={setImages} images={images}/>
-             <Typography color="primary" variant="h6" style={{marginTop:"0.5rem"}}>
+             <Typography color="primary" variant="h6" style={{marginTop:"1.5rem"}}>
                 A maximum of 10 images is allowed
+             </Typography>
+             <Typography color="primary" variant="h6" style={{marginTop:"0.2rem"}}>
+                Images are ordered by favorites
              </Typography>
             <div className={classes.mainGalleryCards}>
                 <Box className={classes.galleryCards}>

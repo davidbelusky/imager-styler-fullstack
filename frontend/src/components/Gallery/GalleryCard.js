@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -19,6 +18,8 @@ function GalleryCard(props) {
     }, []);
 
     let imageUrl = props.styledComponent ? props.data.styled_image : props.data.uploaded_image
+    const imageName = props.shareComponent ? props.data.owner: props.data.img_name
+
     return (
         <Grid data-aos="zoom-in" data-aos-once="true" data-aos-offset="10" data-aos-duration="1000"
          item xs={12} sm={6} md={4} xl={3}>
@@ -29,23 +30,32 @@ function GalleryCard(props) {
                     height = "400px"
                     width = "auto"
                     image={imageUrl}
-                    title={props.data.img_name}
+                    title={imageName}
                 />
             <CardContent style={{height:"65px"}}>
                 <div style={{display:"flex", justifyContent:"space-between"}}>
                     <div>
-                    <Typography style={{color:"black"}} gutterBottom variant="h5" component="h2">
-                    {props.data.img_name}
+                    {props.shareComponent ?
+                    <Typography style={{color:"black",fontSize:"1.1rem"}} gutterBottom variant="h6" component="h6">
+                        Shared by - {imageName}
                     </Typography>
+                    :
+                    <Typography style={{color:"black"}} gutterBottom variant="h5" component="h5">
+                        {imageName}
+                    </Typography>
+                    }
                         <Typography variant="body2" color="textSecondary" component="p">
                         {props.data.img_description}
                         </Typography>
                     </div>
-                    <div style={{display:"flex",marginTop:"1rem"}}>
-                        <FavoriteModal imageId={props.data.id} setImages={props.setImages} images={props.images} styledComponent={props.styledComponent}/>
-                        <ShareModal imageId={props.data.id} imageName={props.data.img_name} setImages={props.setImages} images={props.images} styledComponent={props.styledComponent}/>
-                        <DeleteModal imageId={props.data.id} setImages={props.setImages} images={props.images} styledComponent={props.styledComponent}/>
-                    </div>
+                        { !props.shareComponent &&
+                        
+                        <div style={{display:"flex",marginTop:"1rem"}}>
+                            <FavoriteModal data={props.data} setImages={props.setImages} images={props.images} styledComponent={props.styledComponent}/>
+                            <ShareModal data={props.data} setImages={props.setImages} images={props.images} styledComponent={props.styledComponent}/>
+                            <DeleteModal imageId={props.data.id} setImages={props.setImages} images={props.images} styledComponent={props.styledComponent}/>
+                        </div>
+                        }
                 </div>
             </CardContent>
 

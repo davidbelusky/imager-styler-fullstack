@@ -75,7 +75,7 @@ function NavBar(props) {
     const classes = useStyles();
 
     const menuItemsList = [{'name':'Home',"link":"/"},{'name':'Styler App',"link":"/styler_app"}, {'name':'Gallery',"link":"/gallery"}, {'name':'Styled Gallery',"link":"/styled_gallery"},
-     {'name':'Shared images',"link":"/shared_images"}]
+     {'name':'Shared gallery',"link":"/shared_gallery"}]
 
      async function images(){
         const result = await axiosApiInstance.get(`${API_URL}/api/images/`)
