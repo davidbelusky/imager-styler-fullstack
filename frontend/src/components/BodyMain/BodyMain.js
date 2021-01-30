@@ -6,32 +6,75 @@ import style_transfer_image from "../../images/static/style_transfer_example.png
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+
 
 const useStyles = makeStyles((theme) => ({
     infoLayout: {
         width: "100%",
         marginTop: "6rem"
     },
+    '@media (max-width: 590px)': {
+        width:"85%"
+    },
     exampleLayout:{
         width: "100%",
-        marginTop: "12rem"
+        marginTop: "12rem",
+        '@media (max-width: 945px)': {
+            marginTop: "3rem"
+        },
+        '@media (max-width: 590px)': {
+            display:"flex",
+            flexDirection:"column",
+            alignItems:"center"
+        }
 
     },
     infoText: {
-        marginLeft: "7rem",
-        maxWidth: "30rem"
+        paddingLeft: "7rem",
+        maxWidth: "30rem",
+        '@media (max-width: 1350px)': {
+            paddingLeft: "2rem"
+        },
+        '@media (max-width: 913px)': {
+            display: "flex",
+            flexDirection:"column",
+            alignItems:"center"
+        },
+        '@media (max-width: 720px)': {
+            paddingLeft: "0"
+        },
     },
     secondInfoText: {
-        marginTop:"1rem"
+        marginTop:"1rem",
+        '@media (max-width: 926px)': {
+            width: "80%",
+        },
+        '@media (max-width: 898px)': {
+            textAlign:"center"
+        }
     },
     tryItButton: {
         fontSize: "1.4rem",
         width:"18rem",
-        marginTop:"2rem"
+        marginTop:"2rem",
+        '@media (max-width: 926px)': {
+            width: "80%"
+        }
     },
     secondStylerText: {
         maxWidth: "40rem",
-        marginBottom: "2rem"
+        marginBottom: "2rem",
+        '@media (max-width: 1147px)': {
+            maxWidth: "435px"
+        }
+
+    },
+    imageStyleExample: {
+        maxWidth:"670px",
+        '@media (max-width: 1350px)': {
+            maxWidth: "435px"
+        }
     }
 
   }));
@@ -48,10 +91,12 @@ export default function BodyMain() {
         infoText = "Choose image from your gallery then select style image from PC and run stylizing. Result will be saved into your Styled images gallery"
     }
 
+    const hideExtraText = useMediaQuery('(min-width:731px)')
+
     return (
         <div>
-            <Grid container justify="center" spacing={5}>
-                    <Grid item xs={12} sm={6}>
+            <Grid container justify="center">
+                    <Grid item xs={12} sm={6} m={6}>
                         <div className={classes.infoLayout}>
                             <div className={classes.infoText}>
                                 <Typography color="primary" variant="h3"> {isLogged ? "Styler App": "Demo styler"}</Typography>
@@ -64,13 +109,13 @@ export default function BodyMain() {
                             </div>
                         </div>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item item xs={12} sm={6} m={6}>
                         <div className={classes.exampleLayout}>
                             <Typography color="primary" variant="h3">Image styler</Typography>
                             <Typography className={classes.secondStylerText} color="primary" variant="h6">
                                 Style transfer is a computer vision technique that allows us to recompose the content of an image in the style of another. If you’ve ever imagined what a photo might look like if it were painted by a famous artist, then style transfer is the computer vision technique that turns this into a reality. 
                             </Typography>
-                            <img src={style_transfer_image} alt="style transfer example" height="270"/>
+                            <img src={style_transfer_image} alt="style transfer example" className={classes.imageStyleExample}/>
 
                         </div>
                     </Grid>

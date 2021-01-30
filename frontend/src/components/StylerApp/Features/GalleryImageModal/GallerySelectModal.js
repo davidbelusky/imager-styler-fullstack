@@ -40,7 +40,7 @@ export default function GallerySelectModal(props) {
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}  style={{marginBottom:"1rem",width:"250px",fontSize:"1rem",textTransform:'none'}}>
+      <Button variant="contained" color="secondary" onClick={handleClickOpen}  style={{marginBottom:"1rem",width:"250px",fontSize:"1rem",textTransform:'none'}}>
         Choose image from gallery
       </Button>
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
@@ -52,9 +52,6 @@ export default function GallerySelectModal(props) {
             <Typography variant="h6" className={classes.title} color="primary">
               Please select image from your gallery
             </Typography>
-            <Button autoFocus onClick={handleClose} color="primary" style={{fontSize:"1.2rem"}}>
-              SAVE
-            </Button>
           </Toolbar>
         </AppBar>
 

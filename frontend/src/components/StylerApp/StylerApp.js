@@ -201,7 +201,7 @@ export default function StylerApp() {
         initial={{opacity:0}}
         animate={{opacity:1}}
         >
-            <Button style={{fontSize:"1rem" ,width:"10rem", marginTop:"0.2rem",textTransform: "none"}} variant="contained" color="secondary" component={Link} to="/">
+            <Button style={{fontSize:"1rem" ,width:"10rem", marginTop:"0.2rem",textTransform: "none"}} variant="outlined" color="primary" component={Link} to="/">
                 Back to main
             </Button>
         <motion.div
