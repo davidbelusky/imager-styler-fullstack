@@ -12,10 +12,13 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 const useStyles = makeStyles((theme) => ({
     infoLayout: {
         width: "100%",
-        marginTop: "6rem"
+        marginTop: "6rem",
+        '@media (max-width: 595px)': {
+            marginTop: "3rem"
+        },
     },
     '@media (max-width: 590px)': {
-        width:"85%"
+        width:"80%"
     },
     exampleLayout:{
         width: "100%",
@@ -26,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
         '@media (max-width: 590px)': {
             display:"flex",
             flexDirection:"column",
-            alignItems:"center"
         }
 
     },
@@ -39,10 +41,13 @@ const useStyles = makeStyles((theme) => ({
         '@media (max-width: 913px)': {
             display: "flex",
             flexDirection:"column",
-            alignItems:"center"
+            //alignItems:"center"
         },
         '@media (max-width: 720px)': {
-            paddingLeft: "0"
+            paddingLeft: "0.5rem"
+        },
+        '@media (max-width: 670px)': {
+            margin: "auto"
         },
     },
     secondInfoText: {
@@ -50,9 +55,6 @@ const useStyles = makeStyles((theme) => ({
         '@media (max-width: 926px)': {
             width: "80%",
         },
-        '@media (max-width: 898px)': {
-            textAlign:"center"
-        }
     },
     tryItButton: {
         fontSize: "1.4rem",
@@ -65,6 +67,8 @@ const useStyles = makeStyles((theme) => ({
     secondStylerText: {
         maxWidth: "40rem",
         marginBottom: "2rem",
+        paddingLeft:"0.5rem",
+        paddingRight:"0.5rem",
         '@media (max-width: 1147px)': {
             maxWidth: "435px"
         }
@@ -74,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
         maxWidth:"670px",
         '@media (max-width: 1350px)': {
             maxWidth: "435px"
+        },
+        '@media (max-width: 440px)': {
+            maxWidth: "100%"
         }
     }
 

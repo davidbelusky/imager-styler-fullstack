@@ -37,6 +37,12 @@ const theme = createMuiTheme({
 
   // Override after focus text input label text stay black color
   overrides: {
+
+    MuiDropzoneArea:{
+      root:{
+        "minHeight":"150px"
+      }
+    },
     MuiFormLabel: {
       root: {
         "&$focused": {

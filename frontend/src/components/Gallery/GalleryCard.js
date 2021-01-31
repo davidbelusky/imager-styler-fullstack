@@ -22,8 +22,8 @@ function GalleryCard(props) {
 
     return (
         <Grid data-aos="zoom-in" data-aos-once="true" data-aos-offset="10" data-aos-duration="1000"
-         item xs={12} sm={6} md={4} xl={3}>
-            <Card style={{height:"480px", width:"400px"}}>
+         item xs={12} sm={12} md={6} lg={4} xl={3}>
+            <Card style={{maxHeight:"480px", maxWidth:"400px", margin:"auto"}}>
                 <CardMedia
                     component="img"
                     alt={props.data.img_name}

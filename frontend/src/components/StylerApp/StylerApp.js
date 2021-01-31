@@ -16,6 +16,9 @@ import { useSelector } from 'react-redux'
 import StylerForm from "./Features/StylerForm"
 import {getStyledImages} from "../../requests/getStyledImages"
 import { useHistory } from 'react-router-dom'
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { ContactSupport } from '@material-ui/icons';
+
 
 
 
@@ -53,6 +56,8 @@ export default function StylerApp() {
     const isLogged = useSelector(state => state.isLogged)
     const [styledImageNames, setStyledImageNames] = useState([])
     const history = useHistory();
+    const heightCheck = useMediaQuery('(min-height:790px)');
+
 
     useEffect(async() => {
         const data = await getStyledImages()
@@ -104,11 +109,13 @@ export default function StylerApp() {
         return
         }
     }
+
+    const heightSet = heightCheck ? "539px": "400px"
     function stepComponent() {
         // Return action component based on step state
         switch(step) {
           case 1:
-            return <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginTop:"2rem", height:"539px"}}>
+            return <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginTop:"2rem", height:heightSet}}>
                         {
                             isLogged ? 
                             <div>
@@ -118,13 +125,13 @@ export default function StylerApp() {
                             :
                             <DragnDrop setFile={setFile} file={file}/>
                         }
-                        { file.file && <img style={{maxWidth: "400px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={file.url}/>}
+                        { file.file && <img style={{maxWidth: "370px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={file.url}/>}
                         
                     </div>
           case 2:
-              return  <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginTop:"2rem",height:"539px"}}>
+              return  <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginTop:"2rem",height:heightSet}}>
                         <DragnDrop setFile={setFileStyle} file={fileStyle}/>
-                        { fileStyle.file && <img style={{maxWidth: "400px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={fileStyle.url}/>}
+                        { fileStyle.file && <img style={{maxWidth: "370px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={fileStyle.url}/>}
                     </div>
           case 3:
               return <Confirm file={file} fileStyle={fileStyle}/>
@@ -209,12 +216,12 @@ export default function StylerApp() {
         variants={stylerChangePage}
         >
             <Grid container direction="column" justify="center" alignItems="center">
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12}>
                         <div className={classes.appTitle}>
                             <Typography color="primary" variant="h2">{actualStepData.title}</Typography>
                         </div>
                     </Grid>
-                    <Grid item xs={12} sm={6} style={{width: "100%"}}>
+                    <Grid item xs={12} style={{width: "100%"}}>
                         <div className={classes.appBody}>
                             {stepComponent()}
                         </div>
@@ -223,7 +230,7 @@ export default function StylerApp() {
                 </Grid>
 
                 <Grid container direction="column" justify="center" alignItems="center" >
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12}>
                     {(step > 1 && step < 4)&&
                         <Button className={classes.btnControls} style={{fontSize:"1.5rem" ,width:"10rem" ,marginRight:"2rem"}} variant="outlined" color="primary" onClick={handleClick}>
                             Back

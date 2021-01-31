@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     flex: 1,
   },
+ 
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -39,11 +40,16 @@ export default function GallerySelectModal(props) {
   };
 
   return (
-    <div>
+    <div style={{height:"100%"}}>
       <Button variant="contained" color="secondary" onClick={handleClickOpen}  style={{marginBottom:"1rem",width:"250px",fontSize:"1rem",textTransform:'none'}}>
         Choose image from gallery
       </Button>
-      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+      <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition} PaperProps={{
+    style: {
+      backgroundColor: "black",
+      boxShadow: "none"
+    },
+  }}>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="primary" onClick={handleClose} aria-label="close">

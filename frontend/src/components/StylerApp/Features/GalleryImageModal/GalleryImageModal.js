@@ -19,7 +19,7 @@ export default function GalleryImageModal(props) {
     return (
         <Grid data-aos="zoom-in" data-aos-once="true" data-aos-offset="10" data-aos-duration="500"
         item xs={12} sm={6} md={4} lg={3} xl={3}>
-           <Card onClick={selectImage} style={{height:"250px", width:"250px"}}>
+           <Card onClick={selectImage} style={{height:"250px", maxWidth:"250px",margin:"auto"}}>
                <CardMedia
                    component="img"
                    alt={props.data.img_name}

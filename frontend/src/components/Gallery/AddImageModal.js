@@ -10,10 +10,26 @@ import {API_URL} from "../../constants"
 import {axiosApiInstance} from "../../axiosTokenHandle"
 import { useDispatch  } from 'react-redux'
 import { LogOut, OpenLoginDialog} from "../../redux/actions"
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme) => ({
+  modalAddImage: {
+    backgroundColor:"white" ,
+    width:"450px",
+    height:"700px",
+    '@media (max-width: 540px)': {
+        width: "300px"
+    }
+  }
+  }));
+
 
 
 function SimpleDialog(props) {
   const { onClose, open } = props;
+  const classes = useStyles();
+
 
   const handleClose = () => {
     onClose();
@@ -27,7 +43,7 @@ function SimpleDialog(props) {
           <CloseIcon />
         </IconButton>
       </div>
-      <Grid container direction="column" justify="center" alignItems="center" style={{backgroundColor:"white" ,width:"450px",height:"700px"}}>
+      <Grid container direction="column" justify="center" alignItems="center" className={classes.modalAddImage}>
         <Grid item>
           <Typography style={{marginTop:"0rem",color:"#2d2d2d"}} variant="h4">Add Image</Typography>
         </Grid>

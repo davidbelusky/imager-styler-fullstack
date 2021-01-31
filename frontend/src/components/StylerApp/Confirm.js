@@ -8,27 +8,36 @@ const useStyles = makeStyles((theme) => ({
     confirmLayout: {
         width: "100%",
         display: "flex",
-        height: "539px",
         flexDirection: "column",
+        height: "539px",
         justifyContent: "center",
         alignItems: "center",
         marginTop:"2rem",
         "& img": {
             marginBottom:"2rem",
-
-        }
+        },
+        '@media (max-height: 790px)': {
+            height: "400px"
+        },
+    },
+    imageStyle:{
+        maxWidth: "300px",
+        maxHeight: "180px",
+        borderRadius: "4%",
+        '@media (max-height: 790px)': {
+            height: "130px"
+        },
     },
   }));
 
 
 function Confirm(props) {
     const classes = useStyles();
-
     return (
         <div className={classes.confirmLayout}>
-            <img style={{maxWidth: "300px", maxHeight: "180px" ,borderRadius: "4%"}} src={props.file.url}/>
+            <img className={classes.imageStyle} src={props.file.url}/>
             <img src={plusImg}/>
-            <img style={{maxWidth: "300px", maxHeight: "180px",borderRadius: "4%"}} src={props.fileStyle.url}/>
+            <img className={classes.imageStyle} src={props.fileStyle.url}/>
         </div>
     );
 }

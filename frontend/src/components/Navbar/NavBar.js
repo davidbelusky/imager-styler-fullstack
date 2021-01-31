@@ -14,6 +14,10 @@ import { useLocation } from 'react-router-dom'
 import {axiosApiInstance,refreshAccessToken} from "../../axiosTokenHandle"
 import { useSelector, useDispatch  } from 'react-redux'
 import {LogIn, LogOut, OpenLoginDialog} from "../../redux/actions"
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { Home, SettingsApplicationsOutlined, ImageOutlined, BrokenImageOutlined, FolderSharedOutlined } from '@material-ui/icons';
+import BurgerNavBar from "./BurgerNavBar"
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 function NavBar(props) {
+    const hideNavText = useMediaQuery('(min-width:735px)');
+    const hideBasicMenu = useMediaQuery('(min-width:1050px)');
+
     useEffect(async() => {
             // Verify refresh and access token. If refresh is valid update new access token and set isLogged = true
             let token = localStorage.getItem('token')
@@ -74,8 +81,10 @@ function NavBar(props) {
     const urlLocation = useLocation().pathname
     const classes = useStyles();
 
-    const menuItemsList = [{'name':'Home',"link":"/"},{'name':'Styler App',"link":"/styler_app"}, {'name':'Gallery',"link":"/gallery"}, {'name':'Styled Gallery',"link":"/styled_gallery"},
-     {'name':'Shared gallery',"link":"/shared_gallery"}]
+    const menuItemsList = [{'name':'Home',"link":"/","icon":Home},{'name':'Styler App',"link":"/styler_app","icon":SettingsApplicationsOutlined},
+    {'name':'Gallery',"link":"/gallery","icon":ImageOutlined},
+    {'name':'Styled Gallery',"link":"/styled_gallery","icon":BrokenImageOutlined},
+    {'name':'Shared gallery',"link":"/shared_gallery","icon":FolderSharedOutlined}]
 
      async function images(){
         const result = await axiosApiInstance.get(`${API_URL}/api/images/`)
@@ -94,22 +103,34 @@ function NavBar(props) {
         return null
     }
 
+    const navText = hideNavText && "Log in to see more features"
+
     return (
         <div>
             <AppBar className={classes.appBar} position="static">
                 <Toolbar className={classes.toolBar}>
+                    {
+                    (!isLogged || hideBasicMenu)&&
                     <Typography color="primary" variant="h5">
                         Image styler
                     </Typography>
-
+                    }
                     { isLogged 
                     ?
-                    <div className={classes.itemsLayout}> 
+                    <div className={classes.itemsLayout}>
+                       {hideBasicMenu ?
                         <MenuList className={classes.menuList}>
                             {menuItemsList.map((item,i) => <NavBarItem key={i} menuName={item.name} menuLink = {item.link}/>)}
                         </MenuList>
+                        :
+                        <BurgerNavBar menuItemsList={menuItemsList}/>
+                       }
                     </div>
-                    : <Typography color="primary" variant="h5">Log in to see more features</Typography>
+                    : 
+                    <Typography color="primary" variant="h5">{navText}</Typography>
+                    }
+                    {(isLogged && !hideBasicMenu) && <Typography color="primary" variant="h5">Image styler</Typography>
+                    
                     }
                     
                     <div style={{display:"flex"}}>

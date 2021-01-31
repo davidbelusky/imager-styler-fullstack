@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   iconStyle: {
     paddingTop:"0.5rem",
     cursor: "pointer",
-    fontSize:"1.8rem"
+    fontSize:"1.8rem",
   }
   }));
 

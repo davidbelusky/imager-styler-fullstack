@@ -25,7 +25,7 @@ function SimpleDialog(props) {
           <CloseIcon />
         </IconButton>
       </div>
-      <Grid container direction="column" justify="center" alignItems="center" style={{backgroundColor:"white" ,width:"350px",height:"425px"}}>
+      <Grid container direction="column" justify="center" alignItems="center" style={{backgroundColor:"white" ,width:"300px",height:"425px"}}>
         <Grid item>
           <Typography style={{marginTop:"0rem",color:"#2d2d2d"}} variant="h4">Sign Up</Typography>
         </Grid>
@@ -50,7 +50,7 @@ export default function RegisterModal() {
 
   return (
     <div>
-      <Button color="primary" variant="contained" style={{fontSize:"1rem",marginLeft:"0.5rem"}} onClick={handleClickOpen}>Get started</Button>
+      <Button color="primary" variant="contained" style={{fontSize:"0.9rem",marginLeft:"0.5rem"}} onClick={handleClickOpen}>Register</Button>
       <SimpleDialog open={open} onClose={handleClose} />
     </div>
   );
