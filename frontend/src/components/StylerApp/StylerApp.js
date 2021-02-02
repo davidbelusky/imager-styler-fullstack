@@ -59,25 +59,26 @@ export default function StylerApp() {
     const alert = useAlert();
 
 
-    useEffect(async() => {
-        const data = await getStyledImages()
-        const imageNames = []
-        if (!data && isLogged) {
-            alert.error("API is down please try again later")
-            history.push({
-                pathname: '/',
-              });
-            return
+    useEffect(() => {
+        async function getData () {
+            const data = await getStyledImages()
+            const imageNames = []
+            if (!data && isLogged) {
+                alert.error("API is down please try again later")
+                history.push({
+                    pathname: '/',
+                  });
+                return
+            }
+            if (data){
+                data.forEach(function(item, i){
+                    imageNames.push(item.img_name)
+                  })
+                setStyledImageNames(imageNames)
+            }
         }
-   
-        if (data){
-            console.log(data)
-            data.map(function(item, i){
-                imageNames.push(item.img_name)
-              })
-            setStyledImageNames(imageNames)
-        }
-    },[]);
+        getData()
+    },[alert,history,isLogged]);
 
 
     async function startStyleImage () {
@@ -126,7 +127,7 @@ export default function StylerApp() {
                             :
                             <DragnDrop setFile={setFile} file={file}/>
                         }
-                        { file.file && <img style={{maxWidth: "370px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={file.url}/>}
+                        { file.file && <img style={{maxWidth: "370px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={file.url} alt="img"/>}
                         
                     </div>
           case 2:

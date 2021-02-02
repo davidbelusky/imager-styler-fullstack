@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { TextField } from 'formik-material-ui';
 import { Button, Typography } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Field } from 'formik';
 import {API_URL} from '../../constants'
 import axios from 'axios'
 
@@ -36,7 +36,7 @@ function RegisterForm(props) {
             } else if (values.re_password.length < 6){
                 errors.re_password = 'Must be at least 6 characters'
             }
-            else if (values.password != values.re_password){
+            else if (values.password !== values.re_password){
                 errors.re_password = 'Re-password didnt match'
             }
 
@@ -93,7 +93,7 @@ function RegisterForm(props) {
                 required
                 />
                 <div style={{maxWidth:"210px"}}>
-                <Typography style={{marginTop:"2rem",color:infoMessage.color, marginTop:"1rem"}} variant="p" component="p">
+                <Typography style={{color:infoMessage.color, marginTop:"1rem"}} variant="p" component="p">
                     {infoMessage.message}
                 </Typography>
                 </div>

@@ -32,20 +32,22 @@ function SharedGallery(props) {
     const [showSharedImages, setShowSharedImages] = useState([])
     const [styledImagesShowing,setStyledImagesShowing] = useState(false)
 
-    useEffect(async() => {
-        const result = await getSharedImages()
-
-        if (result === false) {
-            dispatch(OpenLoginDialog())
-            dispatch(LogOut())
+    useEffect(() => {
+        async function getSharedImagesList(){
+            const result = await getSharedImages()
+            if (result === false) {
+                dispatch(OpenLoginDialog())
+                dispatch(LogOut())
+            }
+            else{
+                // get object with two keys images (basic images) and styled_images
+                setSharedImages(result)
+                // set basic images as default to show
+                setShowSharedImages(result.images)
+            }
         }
-        else{
-            // get object with two keys images (basic images) and styled_images
-            setSharedImages(result)
-            // set basic images as default to show
-            setShowSharedImages(result.images)
-        }
-        },[]);
+        getSharedImagesList()
+        },[dispatch]);
     
     function handleClickBasic(){
         setShowSharedImages(sharedImages.images)

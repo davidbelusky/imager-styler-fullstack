@@ -21,7 +21,20 @@ export default function ShareModal(props) {
   const [userShares,setUserShares] = useState([])
   const [userList,setUserList] = useState([])
 
+
   useEffect(() => {
+    function getAlreadySharedUsers(result){
+      // Get and set User shares which are already set for image
+      const shareUsersIdArray = props.data.share_user
+      const sharedUserEmails = result.filter(function(item){
+        if (shareUsersIdArray.includes(item.id)){
+          return true
+        }
+        return false
+      }).map(function(item) {return item})
+      return sharedUserEmails
+    }
+
     async function getUsers(){
       const result = await getActiveUsers()
       if (!result){
@@ -35,19 +48,9 @@ export default function ShareModal(props) {
       setUserShares(getAlreadySharedUsers(result))
     }
     getUsers()
-},[dispatch]);
+},[dispatch,props.data.share_user]);
 
-function getAlreadySharedUsers(result){
-  // Get and set User shares which are already set for image
-  const shareUsersIdArray = props.data.share_user
-  const sharedUserEmails = result.filter(function(item){
-    if (shareUsersIdArray.includes(item.id)){
-      return true
-    }
-    return false
-  }).map(function(item) {return item})
-  return sharedUserEmails
-}
+
 
   const handleClickOpen = () => {
     setOpen(true);

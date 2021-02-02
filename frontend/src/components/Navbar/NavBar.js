@@ -13,7 +13,7 @@ import {API_URL} from '../../constants'
 import { useLocation } from 'react-router-dom'
 import {axiosApiInstance,refreshAccessToken} from "../../axiosTokenHandle"
 import { useSelector, useDispatch  } from 'react-redux'
-import {LogIn, LogOut, OpenLoginDialog} from "../../redux/actions"
+import {LogIn, LogOut} from "../../redux/actions"
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Home, SettingsApplicationsOutlined, ImageOutlined, BrokenImageOutlined, FolderSharedOutlined } from '@material-ui/icons';
 import BurgerNavBar from "./BurgerNavBar"
@@ -37,8 +37,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flex:1,
   },
-
-
 }));
 
 

@@ -11,18 +11,19 @@ function GalleryImagesModal(props) {
     const dispatch = useDispatch()
     const [images,setImages] = useState([])
 
-    useEffect(async() => {
-        const result = await getImages()
-
-        if (result === false) {
-            dispatch(OpenLoginDialog())
-            dispatch(LogOut())
+    useEffect(() => {
+        async function getImagesFunc(){
+            const result = await getImages()
+            if (result === false) {
+                dispatch(OpenLoginDialog())
+                dispatch(LogOut())
+            }
+            else{
+                setImages(result)
+            }
         }
-        else{
-            setImages(result)
-        }
-        
-        },[]);
+        getImagesFunc()
+        },[dispatch]);
     
     return (
         <div style={{height:"100%",width:"100%"}}>

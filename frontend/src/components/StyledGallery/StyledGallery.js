@@ -24,17 +24,19 @@ function StyledGallery(props) {
     const dispatch = useDispatch()
     const [styledImages,setStyledImages] = useState([])
 
-    useEffect(async() => {
-        const result = await getStyledImages()
-
-        if (result === false) {
-            dispatch(OpenLoginDialog())
-            dispatch(LogOut())
+    useEffect(() => {
+        async function getStyledImagesList(){
+            const result = await getStyledImages()
+            if (result === false) {
+                dispatch(OpenLoginDialog())
+                dispatch(LogOut())
+            }
+            else{
+                setStyledImages(result)
+            }
         }
-        else{
-            setStyledImages(result)
-        }
-        },[]);
+        getStyledImagesList()
+        },[dispatch]);
 
     return (
         <div style={{display:"flex",flexDirection:"column",marginTop:"2rem", marginBottom:"1rem",alignItems:"center"}}>

@@ -11,7 +11,7 @@ function DragnDrop(props) {
 
     function handleChange(file){
         console.log(file)
-        if (file.length != 0) {
+        if (file.length !== 0) {
             props.setFile({"file":file[0],"url":URL.createObjectURL(file[0])});
         }
       }
