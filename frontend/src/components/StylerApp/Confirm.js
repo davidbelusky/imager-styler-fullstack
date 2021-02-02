@@ -35,9 +35,9 @@ function Confirm(props) {
     const classes = useStyles();
     return (
         <div className={classes.confirmLayout}>
-            <img className={classes.imageStyle} src={props.file.url}/>
-            <img src={plusImg}/>
-            <img className={classes.imageStyle} src={props.fileStyle.url}/>
+            <img className={classes.imageStyle} src={props.file.url} alt="img"/>
+            <img src={plusImg} alt="img"/>
+            <img className={classes.imageStyle} src={props.fileStyle.url} alt="img"/>
         </div>
     );
 }

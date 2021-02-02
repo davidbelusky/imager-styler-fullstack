@@ -21,20 +21,21 @@ export default function ShareModal(props) {
   const [userShares,setUserShares] = useState([])
   const [userList,setUserList] = useState([])
 
-  useEffect(async() => {
-
-    const result = await getActiveUsers()
-    if (!result){
-        dispatch(OpenLoginDialog())
-        dispatch(LogOut())
+  useEffect(() => {
+    async function getUsers(){
+      const result = await getActiveUsers()
+      if (!result){
+          dispatch(OpenLoginDialog())
+          dispatch(LogOut())
+      }
+      else {
+        setUserList(result)
     }
-    else {
-      setUserList(result)
-   }
-    
-    setUserShares(getAlreadySharedUsers(result))
-    
-},[]);
+      
+      setUserShares(getAlreadySharedUsers(result))
+    }
+    getUsers()
+},[dispatch]);
 
 function getAlreadySharedUsers(result){
   // Get and set User shares which are already set for image
@@ -60,7 +61,7 @@ function getAlreadySharedUsers(result){
     const imageUrl = props.styledComponent ? "styled_images" : "images"
     const formData = new FormData();
     // Input all share user IDs to form data
-    userShares.map((item) => {
+    userShares.forEach((item) => {
         formData.append("share_user",item.id)
     })
     formData.append("img_name",props.data.img_name)

@@ -6,7 +6,6 @@ import style_transfer_image from "../../images/static/style_transfer_example.png
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -98,7 +97,6 @@ export default function BodyMain() {
         infoText = "Choose image from your gallery then select style image from PC and run stylizing. Result will be saved into your Styled images gallery"
     }
 
-    const hideExtraText = useMediaQuery('(min-width:731px)')
 
     return (
         <div>
@@ -116,7 +114,7 @@ export default function BodyMain() {
                             </div>
                         </div>
                     </Grid>
-                    <Grid item item xs={12} sm={6} m={6}>
+                    <Grid item xs={12} sm={6} m={6}>
                         <div className={classes.exampleLayout}>
                             <Typography color="primary" variant="h3">Image styler</Typography>
                             <Typography className={classes.secondStylerText} color="primary" variant="h6">

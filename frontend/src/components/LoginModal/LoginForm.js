@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import { TextField } from 'formik-material-ui';
 import { Button, Typography } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Field } from 'formik';
 import {API_URL} from '../../constants'
 import axios from 'axios'
 import { useDispatch  } from 'react-redux'
-import {LogIn, LogOut} from "../../redux/actions"
-
-
+import {LogIn} from "../../redux/actions"
 
 
 function checkIfUserIsActive(handleClose,email,setInfoMessage,values,dispatch){
@@ -111,7 +109,7 @@ function LoginForm(props) {
                 />
 
                 <div style={{maxWidth:"210px"}}>
-                <Typography style={{marginTop:"2rem",color:"red", marginTop:"1rem"}} variant="p" component="p">
+                <Typography style={{marginTop:"2rem",color:"red"}} variant="p" component="p">
                     {infoMessage}
                 </Typography>
                 </div>

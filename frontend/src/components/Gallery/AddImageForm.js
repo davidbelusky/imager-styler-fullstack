@@ -75,7 +75,7 @@ function AddImageForm(props) {
                 
                 const formData = new FormData();
                 // Input all share user IDs to form data
-                userShares.map((item) => {
+                userShares.forEach((item) => {
                     formData.append("share_user",item.id)
                 })
                 formData.append("img_name",imageNameValue)
@@ -115,9 +115,9 @@ function AddImageForm(props) {
                 required
                 label="Image Name"
                 className={classes.formInput}
-                helperText={`${imageNameValue.length}/${15}`}
+                helperText={`${imageNameValue.length}/${10}`}
                 inputProps={{
-                    maxLength: 15
+                    maxLength: 10
                   }}
                 onChange={(e) => handleChange("imageName", e)}
                 />
@@ -128,9 +128,9 @@ function AddImageForm(props) {
                 multiline
                 rowsMax={2}
                 className={classes.formInput}
-                helperText={`${imageDescrValue.length}/${25}`}
+                helperText={`${imageDescrValue.length}/${20}`}
                 inputProps={{
-                    maxLength: 25
+                    maxLength: 20
                   }}
                 onChange={(e) => handleChange("imageDescription", e)}
                 />

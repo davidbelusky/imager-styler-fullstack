@@ -11,15 +11,17 @@ import {axiosApiInstance} from "../../axiosTokenHandle"
 import { useDispatch  } from 'react-redux'
 import { LogOut, OpenLoginDialog} from "../../redux/actions"
 import { makeStyles } from '@material-ui/core/styles';
+import { useAlert } from "react-alert";
+
 
 
 const useStyles = makeStyles((theme) => ({
   modalAddImage: {
     backgroundColor:"white" ,
     width:"450px",
-    height:"700px",
+    maxHeight:"900px",
     '@media (max-width: 540px)': {
-        width: "300px"
+        maxWidth: "300px"
     }
   }
   }));
@@ -59,9 +61,11 @@ function SimpleDialog(props) {
 export default function LoginModal(props) {
   const dispatch = useDispatch()
   const [userList,setUserList] = useState([])
-  
+  const alert = useAlert();
 
-  useEffect(async() => {
+
+  useEffect(() => {
+    async function getUsers(){
     try{
       const result = await axiosApiInstance.get(`${API_URL}/api/active_users/`)
       if (!result){
@@ -74,14 +78,15 @@ export default function LoginModal(props) {
     catch (e) {
       console.log(e)
     }
-
-},[]);
+  }
+  getUsers()
+  },[dispatch]);
 
  
   const [dialogOpen,setDialogOpen] = useState(false)
   const handleClickOpen = () => {
     if (props.images.length >= 10){
-      alert("You already have 10 images. Please delete any image to add a new one")
+      alert.error("You already have 10 images. Please delete any image to add a new one")
       return
     }
     setDialogOpen(true)

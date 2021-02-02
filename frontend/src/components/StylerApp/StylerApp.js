@@ -9,16 +9,15 @@ import Result from "./Result"
 import {API_URL} from '../../constants'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence,AnimateSharedLayout } from 'framer-motion'
-import { demoAnimate,stylerChangePage } from '../../variants'
+import { motion } from 'framer-motion'
+import { stylerChangePage } from '../../variants'
 import GallerySelectModal from './Features/GalleryImageModal/GallerySelectModal'
 import { useSelector } from 'react-redux'
 import StylerForm from "./Features/StylerForm"
 import {getStyledImages} from "../../requests/getStyledImages"
 import { useHistory } from 'react-router-dom'
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { ContactSupport } from '@material-ui/icons';
-
+import { useAlert } from "react-alert";
 
 
 
@@ -57,20 +56,22 @@ export default function StylerApp() {
     const [styledImageNames, setStyledImageNames] = useState([])
     const history = useHistory();
     const heightCheck = useMediaQuery('(min-height:790px)');
+    const alert = useAlert();
 
 
     useEffect(async() => {
         const data = await getStyledImages()
         const imageNames = []
         if (!data && isLogged) {
-            alert("API is down please try again later")
+            alert.error("API is down please try again later")
             history.push({
                 pathname: '/',
               });
             return
         }
-        
-        if (isLogged){
+   
+        if (data){
+            console.log(data)
             data.map(function(item, i){
                 imageNames.push(item.img_name)
               })
@@ -131,7 +132,7 @@ export default function StylerApp() {
           case 2:
               return  <div style={{display:"flex",flexDirection:"column",alignItems:"center",marginTop:"2rem",height:heightSet}}>
                         <DragnDrop setFile={setFileStyle} file={fileStyle}/>
-                        { fileStyle.file && <img style={{maxWidth: "370px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={fileStyle.url}/>}
+                        { fileStyle.file && <img style={{maxWidth: "370px", maxHeight: "230px", margin: "auto" ,borderRadius: "4%"}} src={fileStyle.url} alt="img"/>}
                     </div>
           case 3:
               return <Confirm file={file} fileStyle={fileStyle}/>
@@ -168,19 +169,20 @@ export default function StylerApp() {
         const btnName = e.target.textContent
         if (btnName === "Next"){
             if (step === 1 && file === "") {
-                alert('Please select image')
+                alert.error('Please select image')
                 return
             }
             else if (step === 2 && fileStyle === ""){
-                alert("Please select style image")
+                alert.error("Please select style image")
                 return
                 }
             if (!imageName && isLogged){
-                alert("Please input image name")
+                alert.error("Please input image name")
                 return
             }
+            
             if (styledImageNames.includes(imageName)){
-                alert(`Name ${imageName} already exist. Please change image name`)
+                alert.error(`Name ${imageName} already exist. Please change image name`)
                 return
             }
             

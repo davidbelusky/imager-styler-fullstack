@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -45,39 +45,43 @@ const useStyles = makeStyles((theme) => ({
 function NavBar(props) {
     const hideNavText = useMediaQuery('(min-width:735px)');
     const hideBasicMenu = useMediaQuery('(min-width:1050px)');
+    const dispatch = useDispatch()
 
-    useEffect(async() => {
-            // Verify refresh and access token. If refresh is valid update new access token and set isLogged = true
-            let token = localStorage.getItem('token')
-            if (token === null || token === undefined) {
-                const updatedAccessToken = refreshAccessToken()
-                if (updatedAccessToken === false){
-                    dispatch(LogOut())
 
+    useEffect(() => {
+            async function getData(){
+                // Verify refresh and access token. If refresh is valid update new access token and set isLogged = true
+                let token = localStorage.getItem('token')
+                if (token === null || token === undefined) {
+                    const updatedAccessToken = refreshAccessToken()
+                    if (updatedAccessToken === false){
+                        dispatch(LogOut())
+
+                    }
+                    else{
+                        token = localStorage.getItem('token')
+                    }
+                    return
                 }
-                else{
-                    token = localStorage.getItem('token')
+                const data = {"token": token}
+                try{
+                    const result = await axiosApiInstance.post(`${API_URL}/api/auth/jwt/verify`,data)
+                    if (result === false) {
+                        dispatch(LogOut())
+                    }
+                    else if (result.status === 200){
+                        dispatch(LogIn())
+                    }
                 }
-                return
+                catch (e){
+                    console.log(e)
+                }
             }
-            const data = {"token": token}
-            try{
-                const result = await axiosApiInstance.post(`${API_URL}/api/auth/jwt/verify`,data)
-                if (result === false) {
-                    dispatch(LogOut())
-                }
-                else if (result.status === 200){
-                    dispatch(LogIn())
-                }
-            }
-            catch (e){
-                console.log(e)
-            }
-        },[]);
+            getData()
+        },[dispatch]);
     
     
     const isLogged = useSelector(state => state.isLogged)
-    const dispatch = useDispatch()
     const urlLocation = useLocation().pathname
     const classes = useStyles();
 
@@ -86,13 +90,6 @@ function NavBar(props) {
     {'name':'Styled Gallery',"link":"/styled_gallery","icon":BrokenImageOutlined},
     {'name':'Shared gallery',"link":"/shared_gallery","icon":FolderSharedOutlined}]
 
-     async function images(){
-        const result = await axiosApiInstance.get(`${API_URL}/api/images/`)
-        if (result === false){
-            dispatch(OpenLoginDialog())
-            dispatch(LogOut())
-        }
-     }
 
      function logoutUser(){
          localStorage.clear()

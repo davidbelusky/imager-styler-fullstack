@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { useDispatch  } from 'react-redux'
 import { LogOut, OpenLoginDialog} from "../../redux/actions"
 import AddImageModal from "./AddImageModal"
@@ -25,18 +25,20 @@ function Gallery(props) {
     const dispatch = useDispatch()
     const [images,setImages] = useState([])
 
-    useEffect(async() => {
-        const result = await getImages()
+    useEffect(() => {
+        async function getBasicImages(){
+            const result = await getImages()
 
-        if (result === false) {
-            dispatch(OpenLoginDialog())
-            dispatch(LogOut())
+            if (result === false) {
+                dispatch(OpenLoginDialog())
+                dispatch(LogOut())
+            }
+            else{
+                setImages(result)
+            }
         }
-        else{
-            setImages(result)
-        }
-        
-        },[]);
+        getBasicImages()
+        },[dispatch]);
 
     return (
         <div style={{display:"flex",flexDirection:"column",marginTop:"2rem", marginBottom:"1rem",alignItems:"center"}}>

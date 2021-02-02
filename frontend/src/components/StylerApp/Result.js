@@ -41,7 +41,7 @@ function Result(props) {
         <div style={{height: heightSet}}>
             {props.resultImage ? (
                 <div className={classes.resultLayout}>
-                    <img className={classes.imageStyle} src={props.resultImage}/>
+                    <img className={classes.imageStyle} src={props.resultImage} alt="img"/>
                     <Typography style={{marginTop:"2rem"}} variant="h4" component="h4" color="primary">
                     <Link href={props.resultImage}>
                         Link

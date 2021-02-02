@@ -5,7 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios'
-import {API_URL} from './constants'
 import {createStore} from 'redux'
 import allReducers from './redux/reducers'
 import { Provider } from 'react-redux'
@@ -40,7 +39,8 @@ const theme = createMuiTheme({
 
     MuiDropzoneArea:{
       root:{
-        "minHeight":"150px"
+        "minHeight":"150px",
+        "height":"100%"
       }
     },
     MuiFormLabel: {
