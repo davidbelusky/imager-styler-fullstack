@@ -11,6 +11,10 @@ services:
       - ./api/.env
     depends_on:
       - db
+    ports:
+      - 8000:8000
+    command:
+      bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
 
   db:
     image: postgres:12.0-alpine
@@ -18,9 +22,11 @@ services:
       - pg_data:/var/lib/postgresql/datas/
     env_file:
       - ./db/.env
+    ports:
+      - 5434:5432
 
   nginx:
-    restart: unless-stopped
+    restart: always
     build: .
     volumes:
       - django_static:/app/django_files/static
